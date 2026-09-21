@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Панель администратора — Мой сайт{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 800px; margin: 0 auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h1 style="margin: 0;">Сообщения из формы 📬</h1>
+        <!-- Кнопка Выйти -->
+        <a href="{{ url_for('logout') }}" style="background: #ef4444; color: white; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: bold;">Выйти 🚪</a>
+    </div>
+
+    {% if messages %}
+        <div style="display: flex; flex-direction: column; gap: 15px;">
+            {% for msg in messages %}
+                <div style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 10px; background: rgba(0,0,0,0.02); text-align: left;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <strong style="color: #667eea;">{{ msg.username }}</strong>
+                        <small style="color: #a0aec0;">{{ msg.date.strftime('%d.%m.%Y %H:%M') }}</small>
+                    </div>
+                    <p style="margin: 0; color: #4a5568; line-height: 1.4;">{{ msg.user_message }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Сообщений пока нет.</p>
+    {% endif %}
+</div>
+{% endblock %}

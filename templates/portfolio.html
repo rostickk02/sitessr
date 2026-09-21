@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Портфолио — Мой сайт{% endblock %}
+
+{% block content %}
+<div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+    <h1 style="color: white; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">Мои проекты</h1>
+    <p style="color: #e2e8f0; margin-bottom: 25px;">Проекты, над которыми я работаю и развиваюсь:</p>
+
+    <!-- Сетка карточек -->
+    <div class="portfolio-grid">
+        {% for project in projects %}
+            <div class="project-card">
+                <div>
+                    <div class="project-icon">
+                        <i class="{{ project.icon }}"></i>
+                    </div>
+                    <h2 class="project-title">{{ project.title }}</h2>
+                    <p class="project-desc">{{ project.description }}</p>
+                </div>
+                <!-- Теги технологий -->
+                <div class="tech-tags">
+                    {% for tech in project.tech %}
+                        <span class="tag">{{ tech }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

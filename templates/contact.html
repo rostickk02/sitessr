@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Контакты — Мой сайт{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Обратная связь 📬</h1>
+    
+    {% if name %}
+        <!-- Показываем это сообщение ПОСЛЕ отправки формы -->
+        <p>Спасибо, <strong>{{ name }}</strong>! Ваше сообщение: «{{ message }}» принято!</p>
+        <a href="{{ url_for('contact') }}" class="btn">Отправить еще</a>
+    {% else %}
+        <!-- Показываем форму ДО отправки -->
+        <form action="{{ url_for('contact') }}" method="POST">
+            <input type="text" name="username" placeholder="Ваше имя" required>
+            <textarea name="user_message" rows="4" placeholder="Ваше сообщение" required></textarea>
+            <button type="submit" class="btn">Отправить</button>
+        </form>
+    {% endif %}
+</div>
+{% endblock %}
