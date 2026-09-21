@@ -1,29 +1,110 @@
 {% extends 'base.html' %}
 
-{% block title %}Панель администратора — Мой сайт{% endblock %}
+{% block title %}Админ-панель — Мой сайт{% endblock %}
 
 {% block content %}
-<div class="card" style="max-width: 800px; margin: 0 auto;">
+<div class="card" style="max-width: 900px; margin: 0 auto; text-align: left;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h1 style="margin: 0;">Сообщения из формы 📬</h1>
-        <!-- Кнопка Выйти -->
+        <h1 style="margin: 0;">Панель управления 🔐</h1>
         <a href="{{ url_for('logout') }}" style="background: #ef4444; color: white; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: bold;">Выйти 🚪</a>
     </div>
 
-    {% if messages %}
-        <div style="display: flex; flex-direction: column; gap: 15px;">
-            {% for msg in messages %}
-                <div style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 10px; background: rgba(0,0,0,0.02); text-align: left;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <strong style="color: #667eea;">{{ msg.username }}</strong>
-                        <small style="color: #a0aec0;">{{ msg.date.strftime('%d.%m.%Y %H:%M') }}</small>
+    <!-- Уведомления -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div style="background: #dcfce7; color: #15803d; padding: 10px; border-radius: 8px; margin-bottom: 20px; font-weight: bold;">
+          {% for message in messages %}
+            {{ message }}
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- 1. Блок Статистики -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px;">
+        <div style="background: #f1f5f9; padding: 15px; border-radius: 10px; border-left: 5px solid #3b82f6;">
+            <div style="font-size: 12px; color: #64748b; font-weight: bold;">ВСЕГО СООБЩЕНИЙ</div>
+            <div style="font-size: 24px; font-weight: bold; color: #1e293b;">{{ stats.total_messages }}</div>
+        </div>
+        <div style="background: #f1f5f9; padding: 15px; border-radius: 10px; border-left: 5px solid #eab308;">
+            <div style="font-size: 12px; color: #64748b; font-weight: bold;">НЕПРОЧИТАННЫХ</div>
+            <div style="font-size: 24px; font-weight: bold; color: #1e293b;">{{ stats.unread_messages }}</div>
+        </div>
+        <div style="background: #f1f5f9; padding: 15px; border-radius: 10px; border-left: 5px solid #10b981;">
+            <div style="font-size: 12px; color: #64748b; font-weight: bold;">ПРОЕКТОВ В ПОРТФОЛИО</div>
+            <div style="font-size: 24px; font-weight: bold; color: #1e293b;">{{ stats.total_projects }}</div>
+        </div>
+    </div>
+
+    <!-- 2. Форма Добавления Проекта -->
+    <h2 style="border-bottom: 2px solid #e2e8f0; padding-bottom: 8px;">Добавить проект в Портфолио 🚀</h2>
+    <form action="{{ url_for('add_project') }}" method="POST" style="margin-bottom: 35px; background: rgba(0,0,0,0.02); padding: 15px; border-radius: 10px;">
+        <div style="margin-bottom: 10px;">
+            <input type="text" name="title" required placeholder="Название проекта" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
+        </div>
+        <div style="margin-bottom: 10px;">
+            <textarea name="description" required placeholder="Описание проекта" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box; height: 60px;"></textarea>
+        </div>
+        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+            <input type="text" name="tech" required placeholder="Технологии (через запятую: Python, Flask, HTML)" style="flex: 2; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
+            <input type="text" name="icon" placeholder="Иконка (например: fa-solid fa-code)" style="flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
+        </div>
+        <button type="submit" style="background: #10b981; color: white; padding: 8px 16px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">Добавить в Портфолио</button>
+    </form>
+
+    <!-- 3. Список Проектов (Удаление) -->
+    <h2 style="border-bottom: 2px solid #e2e8f0; padding-bottom: 8px;">Управление Портфолио 💻</h2>
+    {% if projects %}
+        <div style="margin-bottom: 35px; display: flex; flex-direction: column; gap: 10px;">
+            {% for proj in projects %}
+                <div style="display: flex; justify-content: space-between; align-items: center; border: 1px solid #e2e8f0; padding: 10px 15px; border-radius: 8px;">
+                    <div>
+                        <strong><i class="{{ proj.icon }}"></i> {{ proj.title }}</strong>
+                        <span style="font-size: 12px; color: #64748b; margin-left: 10px;">({{ proj.tech }})</span>
                     </div>
-                    <p style="margin: 0; color: #4a5568; line-height: 1.4;">{{ msg.user_message }}</p>
+                    <form action="{{ url_for('delete_project', proj_id=proj.id) }}" method="POST" style="margin: 0;">
+                        <button type="submit" onclick="return confirm('Удалить проект?');" style="background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer;">Удалить 🗑️</button>
+                    </form>
                 </div>
             {% endfor %}
         </div>
     {% else %}
-        <p>Сообщений пока нет.</p>
+        <p style="color: #94a3b8; margin-bottom: 35px;">В портфолио пока нет проектов.</p>
+    {% endif %}
+
+    <!-- 4. Управление Сообщениями (Удаление и Изменение статуса) -->
+    <h2 style="border-bottom: 2px solid #e2e8f0; padding-bottom: 8px;">Входящие сообщения 📬</h2>
+    {% if messages %}
+        <div style="display: flex; flex-direction: column; gap: 15px;">
+            {% for msg in messages %}
+                <div style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 10px; background: {% if not msg.is_read %}#fefce8{% else %}transparent{% endif %}; border-left: 5px solid {% if not msg.is_read %}#eab308{% else %}#cbd5e1{% endif %};">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <div>
+                            <strong style="color: #3b82f6;">{{ msg.username }}</strong>
+                            {% if not msg.is_read %}
+                                <span style="background: #fef08a; color: #854d0e; font-size: 11px; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 5px;">НОВОЕ</span>
+                            {% endif %}
+                            <small style="color: #94a3b8; margin-left: 8px;">{{ msg.date.strftime('%d.%m.%Y %H:%M') }}</small>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <!-- Кнопка прочтения -->
+                            <form action="{{ url_for('toggle_read', msg_id=msg.id) }}" method="POST" style="margin: 0;">
+                                <button type="submit" style="background: #64748b; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer;">
+                                    {% if msg.is_read %}Прочитано ✓{% else %}Отметить прочитанным{% endif %}
+                                </button>
+                            </form>
+                            <!-- Кнопка удаления -->
+                            <form action="{{ url_for('delete_message', msg_id=msg.id) }}" method="POST" style="margin: 0;">
+                                <button type="submit" onclick="return confirm('Удалить сообщение?');" style="background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 12px; cursor: pointer;">Удалить 🗑️</button>
+                            </form>
+                        </div>
+                    </div>
+                    <p style="margin: 0; color: #334155; line-height: 1.4;">{{ msg.user_message }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="color: #94a3b8;">Сообщений пока нет.</p>
     {% endif %}
 </div>
-{% endblock %}
+<!-- {% endblock %} -->
