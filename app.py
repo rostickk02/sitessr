@@ -1,30 +1,39 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+# from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 app = Flask(__name__)
-
-# Секретный ключ для работы сессий (паролей/авторизации)
 app.secret_key = 'super_secret_key_change_me'
 
-# Настройки администратора (логин и пароль)
 ADMIN_USERNAME = 'admin'
-ADMIN_PASSWORD = 'admin123'  # Вы можете изменить пароль на свой!
+ADMIN_PASSWORD = 'admin123'
 
-# Настройка базы данных SQLite
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-# Модель таблицы сообщений в БД
+# --- МОДЕЛИ БАЗЫ ДАННЫХ ---
+
+# 1. Таблица сообщений с поддержкой статуса прочтения (is_read)
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), nullable=False)
     user_message = db.Column(db.Text, nullable=False)
     date = db.Column(db.DateTime, default=datetime.utcnow)
+    is_read = db.Column(db.Boolean, default=False)
+
+# 2. Таблица проектов портфолио
+class Project(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(150), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    tech = db.Column(db.String(200), nullable=False)  # Технологии через запятую
+    icon = db.Column(db.String(100), default='fa-solid fa-code')
 
 with app.app_context():
     db.create_all()
+
+# --- ОСНОВНЫЕ МАРШРУТЫ ---
 
 @app.route('/')
 def home():
@@ -36,27 +45,22 @@ def about():
 
 @app.route('/portfolio')
 def portfolio():
-    projects_list = [
-        {
-            'title': 'Мой первый сайт на Flask',
-            'description': 'Многостраничный сайт с базой данных SQLite, тёмной темой и формой обратной связи.',
-            'tech': ['Python', 'Flask', 'HTML/CSS', 'SQLite'],
-            'icon': 'fa-solid fa-code'
-        },
-        {
-            'title': 'Телеграм-бот на Python',
-            'description': 'Чат-бот для автоматической обработки команд и взаимодействия с пользователями.',
-            'tech': ['Python', 'aiogram', 'API'],
-            'icon': 'fa-brands fa-telegram'
-        },
-        {
-            'title': 'Дизайн макет в Photoshop',
-            'description': 'Авторский UX/UI макет интерфейса, подготовленный для дальнейшей верстки.',
-            'tech': ['Photoshop', 'UI/UX', 'Design'],
-            'icon': 'fa-solid fa-paintbrush'
-        }
-    ]
-    return render_template('portfolio.html', projects=projects_list)
+    # Загружаем проекты из БД
+    projects = Project.query.all()
+    
+    # Преобразуем строку с технологиями обратно в список для корректного отображения тегов
+    projects_data = []
+    for p in projects:
+        tech_list = [t.strip() for t in p.tech.split(',') if t.strip()]
+        projects_data.append({
+            'id': p.id,
+            'title': p.title,
+            'description': p.description,
+            'tech': tech_list,
+            'icon': p.icon
+        })
+        
+    return render_template('portfolio.html', projects=projects_data)
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
@@ -72,7 +76,8 @@ def contact():
 
     return render_template('contact.html')
 
-# Страница входа в админку
+# --- АВТОРИЗАЦИЯ ---
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -87,21 +92,85 @@ def login():
 
     return render_template('login.html')
 
-# Выход из админки
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
     return redirect(url_for('login'))
 
-# Защищенная панель администратора
+# --- ПАНЕЛЬ АДМИНИСТРАТОРА И УПРАВЛЕНИЕ ---
+
 @app.route('/admin')
 def admin():
-    # Проверяем, авторизован ли пользователь
     if not session.get('logged_in'):
         return redirect(url_for('login'))
 
-    all_messages = Message.query.order_by(Message.date.desc()).all()
-    return render_template('admin.html', messages=all_messages)
+    messages = Message.query.order_by(Message.date.desc()).all()
+    projects = Project.query.all()
+
+    # Сбор статистики
+    total_messages = len(messages)
+    unread_messages = Message.query.filter_by(is_read=False).count()
+    total_projects = len(projects)
+
+    stats = {
+        'total_messages': total_messages,
+        'unread_messages': unread_messages,
+        'total_projects': total_projects
+    }
+
+    return render_template('admin.html', messages=messages, projects=projects, stats=stats)
+
+# Удаление сообщения
+@app.route('/admin/delete_message/<int:msg_id>', methods=['POST'])
+def delete_message(msg_id):
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+
+    msg = Message.query.get_or_404(msg_id)
+    db.session.delete(msg)
+    db.session.commit()
+    flash('Сообщение успешно удалено!')
+    return redirect(url_for('admin'))
+
+# Переключение статуса прочтения
+@app.route('/admin/toggle_read/<int:msg_id>', methods=['POST'])
+def toggle_read(msg_id):
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+
+    msg = Message.query.get_or_404(msg_id)
+    msg.is_read = not msg.is_read
+    db.session.commit()
+    return redirect(url_for('admin'))
+
+# Добавление нового проекта
+@app.route('/admin/add_project', methods=['POST'])
+def add_project():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+
+    title = request.form.get('title')
+    description = request.form.get('description')
+    tech = request.form.get('tech')
+    icon = request.form.get('icon') or 'fa-solid fa-code'
+
+    new_project = Project(title=title, description=description, tech=tech, icon=icon)
+    db.session.add(new_project)
+    db.session.commit()
+    flash('Новый проект успешно добавлен!')
+    return redirect(url_for('admin'))
+
+# Удаление проекта
+@app.route('/admin/delete_project/<int:proj_id>', methods=['POST'])
+def delete_project(proj_id):
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+
+    project = Project.query.get_or_404(proj_id)
+    db.session.delete(project)
+    db.session.commit()
+    flash('Проект удален из портфолио!')
+    return redirect(url_for('admin'))
 
 if __name__ == '__main__':
     app.run(debug=True)
