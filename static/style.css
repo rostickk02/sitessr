@@ -662,3 +662,47 @@ button[type="submit"] {
     color: #000;
     transform: scale(1.1);
 }
+
+/* Стилизация блока управления количеством товара */
+.cart-item-qty {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #222;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 4px 8px;
+    margin-top: 6px;
+}
+
+.cart-item-qty button,
+.cart-qty-btn {
+    background: transparent;
+    border: none;
+    color: #facc15;
+    font-size: 16px;
+    font-weight: bold;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, color 0.2s;
+}
+
+.cart-item-qty button:hover,
+.cart-qty-btn:hover {
+    background: #facc15;
+    color: #000;
+}
+
+.cart-item-qty span,
+.cart-qty-val {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    min-width: 18px;
+    text-align: center;
+}
