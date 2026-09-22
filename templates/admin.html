@@ -1,137 +1,203 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель управления — SIDOROV Coffee</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { background: #0f0f0f; color: #fff; font-family: sans-serif; margin: 0; padding: 20px; }
+        .admin-container { max-width: 1200px; margin: 0 auto; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #222; padding-bottom: 15px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .stat-card { background: #1a1a1a; padding: 20px; border-radius: 10px; border: 1px solid #2a2a2a; }
+        .stat-card h4 { margin: 0 0 10px 0; color: #888; font-size: 13px; text-transform: uppercase; }
+        .stat-card .value { font-size: 28px; font-weight: bold; color: #facc15; }
+        .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px; }
+        .chart-card { background: #1a1a1a; padding: 20px; border-radius: 10px; border: 1px solid #2a2a2a; }
+        .section-title { font-size: 20px; color: #facc15; margin: 30px 0 15px 0; border-bottom: 1px solid #222; padding-bottom: 8px; }
+        table { width: 100%; border-collapse: collapse; background: #1a1a1a; border-radius: 10px; overflow: hidden; margin-bottom: 30px; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #2a2a2a; font-size: 14px; }
+        th { background: #222; color: #aaa; font-weight: 600; }
+        .btn-action { background: #333; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; text-decoration: none; }
+        .btn-delete { background: #ef4444; }
+        .btn-toggle { background: #3b82f6; }
+        @media (max-width: 768px) { .charts-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
 
-{% block title %}Кабинет Администратора — SIDOROV Coffee{% endblock %}
-
-{% block content %}
-<section class="section" style="max-width: 1100px; margin: 0 auto;">
-    
-    <!-- Шапка кабинета -->
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--border-color); padding-bottom: 20px;">
+<div class="admin-container">
+    <div class="admin-header">
+        <h2><i class="fa-solid fa-sliders" style="color: #facc15;"></i> Панель управления SIDOROV</h2>
         <div>
-            <span class="subtitle">SIDOROV COFFEE</span>
-            <h1 style="font-family: var(--font-serif); font-size: 32px; font-weight: 400;">Кабинет Администратора ☕</h1>
-        </div>
-        <a href="{{ url_for('logout') }}" class="btn-outline" style="border-color: #ef4444; color: #ef4444;">Завершить смену 🚪</a>
-    </div>
-
-    <!-- Флэш-уведомления -->
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #34d399; padding: 12px 20px; border-radius: 10px; margin-bottom: 30px; font-size: 14px;">
-          {% for message in messages %}{{ message }}{% endfor %}
-        </div>
-      {% endif %}
-    {% endwith %}
-
-    <!-- 1. Карточки Статистики Смены -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 40px;">
-        <div style="background: var(--bg-card); border: 1px solid var(--border-color); padding: 20px; border-radius: 12px;">
-            <div style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Всего обращений</div>
-            <div style="font-size: 30px; font-family: var(--font-serif); margin-top: 5px;">{{ stats.total_messages }}</div>
-        </div>
-        <div style="background: var(--bg-card); border: 1px solid var(--border-color); padding: 20px; border-radius: 12px;">
-            <div style="font-size: 11px; color: #eab308; text-transform: uppercase; letter-spacing: 1px;">Новых броней / писем</div>
-            <div style="font-size: 30px; font-family: var(--font-serif); color: #facc15; margin-top: 5px;">{{ stats.unread_messages }}</div>
-        </div>
-        <div style="background: var(--bg-card); border: 1px solid var(--border-color); padding: 20px; border-radius: 12px;">
-            <div style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Позиций в меню</div>
-            <div style="font-size: 30px; font-family: var(--font-serif); margin-top: 5px;">{{ stats.total_menu_items }}</div>
-        </div>
-        <div style="background: var(--bg-card); border: 1px solid var(--border-color); padding: 20px; border-radius: 12px;">
-            <div style="font-size: 11px; color: #ef4444; text-transform: uppercase; letter-spacing: 1px;">В стоп-листе</div>
-            <div style="font-size: 30px; font-family: var(--font-serif); color: #f87171; margin-top: 5px;">{{ stats.stop_list_count }}</div>
+            <a href="{{ url_for('home') }}" class="btn-action">На сайт</a>
+            <a href="{{ url_for('logout') }}" class="btn-action btn-delete">Выйти</a>
         </div>
     </div>
 
-    <!-- 2. Форма добавления позиции в меню -->
-    <div style="background: var(--bg-card); border: 1px solid var(--border-color); padding: 25px; border-radius: 16px; margin-bottom: 40px;">
-        <h3 style="font-family: var(--font-serif); font-size: 20px; font-weight: 400; margin-bottom: 20px;">+ Добавить новую позицию в меню</h3>
-        <form action="{{ url_for('add_menu_item') }}" method="POST" style="display: flex; flex-direction: column; gap: 15px;">
-            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 15px;">
-                <input type="text" name="title" required placeholder="Название (напр. Флэт Уайт)" style="padding: 10px 14px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 8px; color: white;">
-                <select name="category" style="padding: 10px 14px; background: #1a1c20; border: 1px solid var(--border-color); border-radius: 8px; color: white;">
-                    <option value="Кофе">Кофе</option>
-                    <option value="Авторские напитки">Авторские напитки</option>
-                    <option value="Чай">Чай</option>
-                    <option value="Какао и шоколад">Какао и шоколад</option>
-                    <option value="Еда и выпечка">Еда и выпечка</option>
-                </select>
-                <input type="text" name="price" required placeholder="Цена (напр. 220 ₽)" style="padding: 10px 14px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 8px; color: white;">
-                <input type="text" name="volume" placeholder="Объем (напр. 250 мл)" style="padding: 10px 14px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 8px; color: white;">
-            </div>
-            <div style="display: flex; gap: 15px;">
-                <input type="text" name="description" placeholder="Краткое описание (напр. Двойной эспрессо с нежной молочной пеной)" style="flex: 1; padding: 10px 14px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 8px; color: white;">
-                <button type="submit" class="btn-primary" style="border: none; cursor: pointer;">Сохранить в меню</button>
-            </div>
-        </form>
+    <!-- МЕТРИКИ -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h4>Предзаказы (Take Away)</h4>
+            <div class="value">{{ stats.total_takeaway }}</div>
+        </div>
+        <div class="stat-card">
+            <h4>Всего броней / сообщений</h4>
+            <div class="value">{{ stats.total_messages }}</div>
+        </div>
+        <div class="stat-card">
+            <h4>Непрочитанные</h4>
+            <div class="value">{{ stats.unread_messages }}</div>
+        </div>
+        <div class="stat-card">
+            <h4>Позиций в меню</h4>
+            <div class="value">{{ stats.total_menu_items }}</div>
+        </div>
     </div>
 
-    <!-- 3. Таблица управления Стоп-Листом и Меню -->
-    <div style="margin-bottom: 50px;">
-        <h3 style="font-family: var(--font-serif); font-size: 22px; font-weight: 400; margin-bottom: 20px;">Управление позициями & Стоп-лист</h3>
-        {% if menu_items %}
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                {% for item in menu_items %}
-                    <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); border: 1px solid var(--border-color); padding: 12px 20px; border-radius: 10px; opacity: {% if not item.is_available %}0.5{% else %}1{% endif %};">
-                        <div>
-                            <strong style="font-size: 16px;">{{ item.title }}</strong>
-                            <span style="font-size: 12px; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; margin-left: 10px; color: var(--text-secondary);">{{ item.category }}</span>
-                            <span style="font-size: 13px; color: var(--text-secondary); margin-left: 10px;">{{ item.volume }} — <strong>{{ item.price }}</strong></span>
-                        </div>
-                        <div style="display: flex; gap: 10px; align-items: center;">
-                            <!-- Кнопка Переключения стоп-листа -->
-                            <form action="{{ url_for('toggle_availability', item_id=item.id) }}" method="POST" style="margin: 0;">
-                                <button type="submit" style="background: {% if item.is_available %}#22c55e{% else %}#ef4444{% endif %}; color: white; border: none; padding: 6px 14px; border-radius: 20px; font-size: 12px; cursor: pointer; font-weight: 500;">
-                                    {% if item.is_available %}В наличии ✓{% else %}В стоп-листе ⛔{% endif %}
-                                </button>
-                            </form>
-                            <!-- Удаление -->
-                            <form action="{{ url_for('delete_menu_item', item_id=item.id) }}" method="POST" style="margin: 0;">
-                                <button type="submit" onclick="return confirm('Удалить позицию?');" style="background: transparent; color: #9ca3af; border: 1px solid var(--border-color); padding: 5px 10px; border-radius: 8px; font-size: 12px; cursor: pointer;">🗑️</button>
-                            </form>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p style="color: var(--text-secondary);">В базе пока нет добавленных позиций.</p>
-        {% endif %}
+    <!-- ГРАФИКИ -->
+    <div class="charts-grid">
+        <div class="chart-card">
+            <h3 style="color: #facc15; margin-top: 0; font-size: 16px;">📊 Динамика бронирований (по дням)</h3>
+            <canvas id="bookingsChart" height="180"></canvas>
+        </div>
+        <div class="chart-card">
+            <h3 style="color: #facc15; margin-top: 0; font-size: 16px;">☕️ Топ-5 популярных позиций</h3>
+            <canvas id="popularChart" height="180"></canvas>
+        </div>
     </div>
 
-    <!-- 4. Входящие Бронирования и Сообщения -->
-    <div>
-        <h3 style="font-family: var(--font-serif); font-size: 22px; font-weight: 400; margin-bottom: 20px;">Входящие заявки и Брони 📬</h3>
-        {% if messages %}
-            <div style="display: flex; flex-direction: column; gap: 15px;">
-                {% for msg in messages %}
-                    <div style="background: var(--bg-card); border: 1px solid {% if not msg.is_read %}#facc15{% else %}var(--border-color){% endif %}; padding: 20px; border-radius: 12px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                            <div>
-                                <strong style="font-size: 16px;">{{ msg.username }}</strong>
-                                {% if not msg.is_read %}
-                                    <span style="background: #facc15; color: #000; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 4px; margin-left: 8px;">НОВАЯ</span>
-                                {% endif %}
-                            </div>
-                            <span style="font-size: 12px; color: var(--text-secondary);">{{ msg.date.strftime('%d.%m.%Y в %H:%M') }}</span>
-                        </div>
-                        <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.5; margin-bottom: 15px;">{{ msg.user_message }}</p>
-                        <div style="display: flex; gap: 10px;">
-                            <form action="{{ url_for('toggle_read', msg_id=msg.id) }}" method="POST" style="margin: 0;">
-                                <button type="submit" class="btn-outline" style="padding: 4px 12px; font-size: 12px;">
-                                    {% if msg.is_read %}Отметить новой{% else %}Обработано ✓{% endif %}
-                                </button>
-                            </form>
-                            <form action="{{ url_for('delete_message', msg_id=msg.id) }}" method="POST" style="margin: 0;">
-                                <button type="submit" onclick="return confirm('Удалить запись?');" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid #ef4444; padding: 4px 12px; border-radius: 20px; font-size: 12px; cursor: pointer;">Удалить</button>
-                            </form>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p style="color: var(--text-secondary);">Обращений пока нет.</p>
-        {% endif %}
-    </div>
+    <!-- ТАБЛИЦА ПРЕДЗАКАЗОВ -->
+    <div class="section-title">🛍 Предзаказы (Take Away)</div>
+    <table>
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Имя</th>
+                <th>Телефон</th>
+                <th>Время</th>
+                <th>Заказ</th>
+                <th>Сумма</th>
+                <th>Коммент</th>
+                <th>Действие</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in takeaway_orders %}
+            <tr>
+                <td>{{ order.date.strftime('%d.%m %H:%M') }}</td>
+                <td><b>{{ order.customer_name }}</b></td>
+                <td>{{ order.customer_phone }}</td>
+                <td><span style="color: #facc15;">{{ order.pickup_time }}</span></td>
+                <td>{{ order.items_summary }}</td>
+                <td><b>{{ order.total_price }} ₽</b></td>
+                <td><small style="color: #aaa;">{{ order.comment or '-' }}</small></td>
+                <td>
+                    <form action="{{ url_for('delete_takeaway', order_id=order.id) }}" method="POST" style="display:inline;">
+                        <button class="btn-action btn-delete" onclick="return confirm('Удалить предзаказ?')">&times;</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="8" style="text-align: center; color: #aaa;">Предзаказов пока нет</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-</section>
-{% endblock %}
+    <!-- ТАБЛИЦА БРОНЕЙ -->
+    <div class="section-title">📩 Заявки и Бронирования</div>
+    <table>
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Имя</th>
+                <th>Сообщение / Пожелания</th>
+                <th>Статус</th>
+                <th>Действие</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for msg in messages %}
+            <tr>
+                <td>{{ msg.date.strftime('%d.%m %H:%M') }}</td>
+                <td><b>{{ msg.username }}</b></td>
+                <td>{{ msg.user_message }}</td>
+                <td>
+                    {% if msg.is_read %}
+                        <span style="color: #4ade80;">Прочитано</span>
+                    {% else %}
+                        <span style="color: #facc15;">Новое</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <form action="{{ url_for('toggle_read', msg_id=msg.id) }}" method="POST" style="display:inline;">
+                        <button class="btn-action btn-toggle">Статус</button>
+                    </form>
+                    <form action="{{ url_for('delete_message', msg_id=msg.id) }}" method="POST" style="display:inline;">
+                        <button class="btn-action btn-delete" onclick="return confirm('Удалить?')">&times;</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5" style="text-align: center; color: #aaa;">Заявок пока нет</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Инициализация графика броней
+    const ctxBookings = document.getElementById('bookingsChart').getContext('2d');
+    new Chart(ctxBookings, {
+        type: 'line',
+        data: {
+            labels: {{ chart_days_labels | tojson }},
+            datasets: [{
+                label: 'Заявки',
+                data: {{ chart_days_data | tojson }},
+                borderColor: '#facc15',
+                backgroundColor: 'rgba(250, 204, 21, 0.15)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#aaa' } },
+                x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#aaa' } }
+            }
+        }
+    });
+
+    // Инициализация графика популярных позиций
+    const ctxPopular = document.getElementById('popularChart').getContext('2d');
+    new Chart(ctxPopular, {
+        type: 'bar',
+        data: {
+            labels: {{ popular_labels | tojson }},
+            datasets: [{
+                label: 'Продано штук',
+                data: {{ popular_data | tojson }},
+                backgroundColor: '#facc15',
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#aaa' } },
+                x: { grid: { display: false }, ticks: { color: '#aaa' } }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
