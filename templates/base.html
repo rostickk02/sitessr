@@ -6,6 +6,153 @@
     <title>{% block title %}SIDOROV — Кофейня{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <!-- Вшитые стили для модального окна (чтобы ничего не «плыло») -->
+    <style>
+        /* Скрытие и базовые стили для модального окна */
+        .modal-overlay {
+            display: none; /* Скрываем по умолчанию */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Показываем окно при добавлении класса active */
+        .modal-overlay.active {
+            display: flex !important;
+        }
+
+        .modal-content {
+            background: #141414;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            color: #fff;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 20px;
+            color: #facc15;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: #aaa;
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover {
+            color: #fff;
+        }
+
+        .cart-items-list {
+            margin-bottom: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .cart-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 18px;
+            padding: 15px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .cart-summary strong {
+            color: #facc15;
+            font-size: 22px;
+        }
+
+        /* Стилизация формы внутри модального окна */
+        .takeaway-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group-custom {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group-custom label {
+            font-size: 12px;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group-custom input {
+            width: 100%;
+            padding: 12px 14px;
+            background: #222;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            box-sizing: border-box;
+            color-scheme: dark;
+        }
+
+        .form-group-custom input:focus {
+            border-color: #facc15;
+        }
+
+        .btn-submit {
+            margin-top: 10px;
+            width: 100%;
+            padding: 14px;
+            background: #facc15;
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover {
+            background: #eab308;
+        }
+    </style>
 </head>
 <body>
 
@@ -40,7 +187,7 @@
     </main>
 
     <!-- Модальное окно корзины (Take Away) -->
-    <div id="cart-modal" class="modal-overlay">
+    <div id="cart-modal" class="modal-overlay" onclick="if(event.target === this) toggleCartModal()">
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Ваш предзаказ (Take Away)</h2>
@@ -102,6 +249,14 @@
         </div>
     </footer>
 
+    <!-- JS функция открытия/закрытия окна -->
+    <script>
+        function toggleCartModal() {
+            const modal = document.getElementById('cart-modal');
+            modal.classList.toggle('active');
+        }
+    </script>
+    
     <!-- Подключение JS-скрипта корзины -->
     <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
 </body>
