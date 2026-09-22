@@ -706,3 +706,23 @@ button[type="submit"] {
     min-width: 18px;
     text-align: center;
 }
+
+/* Исправление наложения при автозаполнении в браузерах */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #222 inset !important; /* Устанавливает цвет фона поля (подберите под ваш цвет input) */
+    -webkit-text-fill-color: #fff !important; /* Делает цвет текста белым */
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Общие стили для полей ввода, чтобы текст никогда не сливался */
+input {
+    color: #fff !important;
+}
+
+input::placeholder {
+    color: #777 !important;
+    opacity: 1;
+}
