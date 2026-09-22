@@ -1,142 +1,106 @@
 {% extends 'base.html' %}
 
-{% block title %}Меню — SIDOROV{% endblock %}
+{% block title %}Меню — SIDOROV Coffee{% endblock %}
 
 {% block content %}
-<section class="section">
-    <!-- Заголовок страницы -->
-    <div class="section-header">
-        <span class="subtitle">МЕНЮ</span>
-        <h2>Вкус в каждой детали</h2>
-        <p style="color: var(--text-secondary); max-width: 550px; margin-top: 10px; font-size: 14px;">
-            Мы отбираем лучшие сорта кофе, чтобы каждая чашка дарила удовольствие. Здесь вы найдёте как классику, так и авторские напитки.
+<section style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
+    <!-- Заголовок -->
+    <div style="margin-bottom: 40px;">
+        <span style="color: #facc15; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600;">МЕНЮ</span>
+        <h1 style="font-size: 36px; margin: 10px 0 15px 0;">Вкус в каждой детали</h1>
+        <p style="color: var(--text-secondary); max-width: 600px; font-size: 15px;">
+            Мы отбираем лучшие сорта кофе и ингредиенты, чтобы каждая чашка и блюдо дарили удовольствие.
         </p>
     </div>
 
-    <!-- Иконки категорий меню -->
-    <div style="display: flex; gap: 25px; overflow-x: auto; padding-bottom: 20px; margin-bottom: 40px; border-bottom: 1px solid var(--border-color);">
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; color: #ffffff; cursor: pointer;">
-            <i class="fa-solid fa-mug-hot" style="font-size: 20px;"></i>
-            <span style="font-size: 13px;">Кофе</span>
-        </div>
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-secondary); cursor: pointer;">
-            <i class="fa-solid fa-wand-magic-sparkles" style="font-size: 20px;"></i>
-            <span style="font-size: 13px;">Авторские напитки</span>
-        </div>
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-secondary); cursor: pointer;">
-            <i class="fa-solid fa-leaf" style="font-size: 20px;"></i>
-            <span style="font-size: 13px;">Чай</span>
-        </div>
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-secondary); cursor: pointer;">
-            <i class="fa-solid fa-glass-water" style="font-size: 20px;"></i>
-            <span style="font-size: 13px;">Какао и шоколад</span>
-        </div>
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-secondary); cursor: pointer;">
-            <i class="fa-solid fa-utensils" style="font-size: 20px;"></i>
-            <span style="font-size: 13px;">Еда</span>
-        </div>
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-secondary); cursor: pointer;">
-            <i class="fa-solid fa-cookie" style="font-size: 20px;"></i>
-            <span style="font-size: 13px;">Выпечка</span>
-        </div>
+    <!-- Кнопки категорий -->
+    <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 40px;">
+        <a href="#coffee" style="text-decoration: none; padding: 10px 20px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-primary); font-size: 14px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-mug-hot"></i> Кофе</a>
+        <a href="#author" style="text-decoration: none; padding: 10px 20px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-primary); font-size: 14px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-wand-magic-sparkles"></i> Авторские напитки</a>
+        <a href="#tea" style="text-decoration: none; padding: 10px 20px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-primary); font-size: 14px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-leaf"></i> Чай</a>
+        <a href="#cocoa" style="text-decoration: none; padding: 10px 20px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-primary); font-size: 14px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-glass-water"></i> Какао и шоколад</a>
+        <a href="#food" style="text-decoration: none; padding: 10px 20px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-primary); font-size: 14px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-utensils"></i> Еда</a>
+        <a href="#bakery" style="text-decoration: none; padding: 10px 20px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-primary); font-size: 14px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-cookie"></i> Выпечка</a>
     </div>
 
-    <!-- Основная сетка: Списки слева, Карточки с фото справа -->
-    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 50px;">
+    <!-- Сетка Меню -->
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 40px;" class="menu-grid">
         
-        <!-- ЛЕВАЯ КОЛОНКА: Списки позиций -->
-        <div style="display: flex; flex-direction: column; gap: 40px;">
+        <!-- Левая колонка: Список цен -->
+        <div style="display: flex; flex-direction: column; gap: 35px;">
             
             <!-- Кофе -->
-            <div>
-                <h3 style="font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-bottom: 20px;">Кофе</h3>
-                <div style="display: flex; flex-direction: column; gap: 14px;">
-                    <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dashed rgba(255,255,255,0.08); padding-bottom: 8px;">
-                        <span>Эспрессо <small style="color: var(--text-secondary); margin-left: 8px;">30 мл</small></span>
-                        <strong style="font-weight: 500;">110 ₽</strong>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dashed rgba(255,255,255,0.08); padding-bottom: 8px;">
-                        <span>Американо <small style="color: var(--text-secondary); margin-left: 8px;">200 мл</small></span>
-                        <strong style="font-weight: 500;">150 ₽</strong>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dashed rgba(255,255,255,0.08); padding-bottom: 8px;">
-                        <span>Капучино <small style="color: var(--text-secondary); margin-left: 8px;">200 / 300 мл</small></span>
-                        <strong style="font-weight: 500;">180 / 220 ₽</strong>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dashed rgba(255,255,255,0.08); padding-bottom: 8px;">
-                        <span>Латте <small style="color: var(--text-secondary); margin-left: 8px;">300 мл</small></span>
-                        <strong style="font-weight: 500;">200 ₽</strong>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dashed rgba(255,255,255,0.08); padding-bottom: 8px;">
-                        <span>Раф кофе <small style="color: var(--text-secondary); margin-left: 8px;">300 мл</small></span>
-                        <strong style="font-weight: 500;">250 ₽</strong>
-                    </div>
+            <div id="coffee">
+                <h2 style="font-size: 22px; margin-bottom: 20px; color: #facc15;">Кофе</h2>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Эспрессо <small style="color: var(--text-secondary);">30 мл</small></span><b>110 ₽</b></div>
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Американо <small style="color: var(--text-secondary);">200 мл</small></span><b>150 ₽</b></div>
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Капучино <small style="color: var(--text-secondary);">200 / 300 мл</small></span><b>180 / 220 ₽</b></div>
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Латте <small style="color: var(--text-secondary);">300 мл</small></span><b>200 ₽</b></div>
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Раф кофе <small style="color: var(--text-secondary);">300 мл</small></span><b>250 ₽</b></div>
                 </div>
             </div>
 
             <!-- Авторские напитки -->
-            <div>
-                <h3 style="font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-bottom: 20px;">Авторские напитки</h3>
-                <div style="display: flex; flex-direction: column; gap: 14px;">
-                    <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dashed rgba(255,255,255,0.08); padding-bottom: 8px;">
-                        <span>Раф ванильный <small style="color: var(--text-secondary); margin-left: 8px;">300 мл</small></span>
-                        <strong style="font-weight: 500;">250 ₽</strong>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dashed rgba(255,255,255,0.08); padding-bottom: 8px;">
-                        <span>Раф карамельный <small style="color: var(--text-secondary); margin-left: 8px;">300 мл</small></span>
-                        <strong style="font-weight: 500;">260 ₽</strong>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dashed rgba(255,255,255,0.08); padding-bottom: 8px;">
-                        <span>Матча латте <small style="color: var(--text-secondary); margin-left: 8px;">300 мл</small></span>
-                        <strong style="font-weight: 500;">230 ₽</strong>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dashed rgba(255,255,255,0.08); padding-bottom: 8px;">
-                        <span>Латте пряный <small style="color: var(--text-secondary); margin-left: 8px;">300 мл</small></span>
-                        <strong style="font-weight: 500;">240 ₽</strong>
-                    </div>
+            <div id="author">
+                <h2 style="font-size: 22px; margin-bottom: 20px; color: #facc15;">Авторские напитки</h2>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Раф Ванильный <small style="color: var(--text-secondary);">300 мл</small></span><b>250 ₽</b></div>
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Раф Карамельный <small style="color: var(--text-secondary);">300 мл</small></span><b>260 ₽</b></div>
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Матча Латте <small style="color: var(--text-secondary);">300 мл</small></span><b>230 ₽</b></div>
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Латте Пряный Ягодный <small style="color: var(--text-secondary);">300 мл</small></span><b>240 ₽</b></div>
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Айс Латте Цитрус <small style="color: var(--text-secondary);">350 мл</small></span><b>270 ₽</b></div>
                 </div>
             </div>
 
-            <!-- Динамические позиций из админки (если вы добавляете их сами) -->
-            {% if projects %}
-                <div>
-                    <h3 style="font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-bottom: 20px;">Дополнительно из Бд</h3>
-                    <div style="display: flex; flex-direction: column; gap: 14px;">
-                        {% for item in projects %}
-                            <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dashed rgba(255,255,255,0.08); padding-bottom: 8px;">
-                                <span><i class="{{ item.icon }}"></i> {{ item.title }} <small style="color: var(--text-secondary); margin-left: 8px;">{{ item.description }}</small></span>
-                                <strong style="font-weight: 500;">{{ item.tech[0] if item.tech else '' }}</strong>
-                            </div>
-                        {% endfor %}
-                    </div>
+            <!-- Чай -->
+            <div id="tea">
+                <h2 style="font-size: 22px; margin-bottom: 20px; color: #facc15;">Чай</h2>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Чёрный / Зелёный <small style="color: var(--text-secondary);">400 мл</small></span><b>160 ₽</b></div>
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Облепиховый с имбирём <small style="color: var(--text-secondary);">400 мл</small></span><b>220 ₽</b></div>
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Ягодный микс <small style="color: var(--text-secondary);">400 мл</small></span><b>210 ₽</b></div>
                 </div>
-            {% endif %}
+            </div>
+
+            <!-- Какао и шоколад -->
+            <div id="cocoa">
+                <h2 style="font-size: 22px; margin-bottom: 20px; color: #facc15;">Какао и шоколад</h2>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Классический Какао <small style="color: var(--text-secondary);">300 мл</small></span><b>190 ₽</b></div>
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Горячий шоколад <small style="color: var(--text-secondary);">200 мл</small></span><b>220 ₽</b></div>
+                </div>
+            </div>
+
+            <!-- Еда и Выпечка -->
+            <div id="food">
+                <h2 style="font-size: 22px; margin-bottom: 20px; color: #facc15;">Еда и выпечка</h2>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Круассан классический <small style="color: var(--text-secondary);">80 г</small></span><b>130 ₽</b></div>
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Сэндвич с ветчиной и сыром <small style="color: var(--text-secondary);">180 г</small></span><b>240 ₽</b></div>
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Чизкейк Нью-Йорк <small style="color: var(--text-secondary);">130 г</small></span><b>220 ₽</b></div>
+                </div>
+            </div>
 
         </div>
 
-        <!-- ПРАВАЯ КОЛОНКА: Фотографические карточки акцентов -->
-        <div style="display: flex; flex-direction: column; gap: 25px;">
-            <div style="background: var(--bg-card); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color);">
-                <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?q=80&w=600&auto=format&fit=crop" alt="Капучино" style="width: 100%; height: 220px; object-fit: cover;">
+        <!-- Правая колонка: Визуальные карточки -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div style="background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden;">
+                <img src="https://images.unsplash.com/photo-1534778101976-62847782c213?w=500" alt="Капучино" style="width: 100%; height: 180px; object-fit: cover;">
                 <div style="padding: 15px;">
-                    <div style="font-family: var(--font-serif); font-size: 18px;">Капучино</div>
-                    <div style="font-size: 12px; color: var(--text-secondary); margin: 5px 0 10px 0;">Классика, которая никогда не подведёт</div>
-                    <div style="display: flex; justify-content: space-between; font-size: 13px;">
-                        <span style="color: var(--text-secondary);">200 / 300 мл</span>
-                        <strong>180 / 220 ₽</strong>
-                    </div>
+                    <h3 style="margin: 0 0 5px 0; font-size: 16px;">Капучино</h3>
+                    <p style="color: var(--text-secondary); font-size: 13px; margin: 0 0 10px 0;">Классика, которая никогда не подведёт</p>
+                    <b>180 / 220 ₽</b>
                 </div>
             </div>
 
-            <div style="background: var(--bg-card); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color);">
-                <img src="https://images.unsplash.com/photo-1536256263959-770b48d82b0a?q=80&w=600&auto=format&fit=crop" alt="Матча латте" style="width: 100%; height: 220px; object-fit: cover;">
+            <div style="background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden;">
+                <img src="https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=500" alt="Матча Латте" style="width: 100%; height: 180px; object-fit: cover;">
                 <div style="padding: 15px;">
-                    <div style="font-family: var(--font-serif); font-size: 18px;">Матча латте</div>
-                    <div style="font-size: 12px; color: var(--text-secondary); margin: 5px 0 10px 0;">Нежный вкус и лёгкая горчинка</div>
-                    <div style="display: flex; justify-content: space-between; font-size: 13px;">
-                        <span style="color: var(--text-secondary);">300 мл</span>
-                        <strong>230 ₽</strong>
-                    </div>
+                    <h3 style="margin: 0 0 5px 0; font-size: 16px;">Матча Латте</h3>
+                    <p style="color: var(--text-secondary); font-size: 13px; margin: 0 0 10px 0;">Японский зелёный чай с нежной пенкой</p>
+                    <b>230 ₽</b>
                 </div>
             </div>
         </div>
