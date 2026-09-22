@@ -1,14 +1,24 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 app = Flask(__name__)
-app.secret_key = 'super_secret_key_change_me'
+app.secret_key = os.environ.get('SECRET_KEY', 'super_secret_key_change_me')
 
 ADMIN_USERNAME = 'admin'
 ADMIN_PASSWORD = 'admin123'
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+# --- ПОДКЛЮЧЕНИЕ К БАЗЕ ДАННЫХ ---
+# Если переменная DATABASE_URL есть (на Render), используем PostgreSQL.
+# Иначе подключаем локальную базу SQLite.
+db_url = os.environ.get('DATABASE_URL', 'sqlite:///site.db')
+
+# Исправление особенности строк подключения PostgreSQL на Render (postgres:// -> postgresql://)
+if db_url and db_url.startswith("postgres://"):
+    db_url = db_url.replace("postgres://", "postgresql://", 1)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -45,10 +55,8 @@ def about():
 
 @app.route('/portfolio')
 def portfolio():
-    # Загружаем проекты из БД
     projects = Project.query.all()
     
-    # Преобразуем строку с технологиями обратно в список для корректного отображения тегов
     projects_data = []
     for p in projects:
         tech_list = [t.strip() for t in p.tech.split(',') if t.strip()]
