@@ -7,6 +7,7 @@ gunicorn==26.2.0
 itsdangerous==2.2.0
 Jinja2==3.1.6
 MarkupSafe==3.0.3
+psycopg2-binary==2.9.13
 SQLAlchemy==2.0.54
 typing_extensions==4.16.0
 Werkzeug==3.1.8
