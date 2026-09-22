@@ -19,8 +19,7 @@
         <a href="#author" style="text-decoration: none; padding: 10px 20px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-primary); font-size: 14px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-wand-magic-sparkles"></i> Авторские напитки</a>
         <a href="#tea" style="text-decoration: none; padding: 10px 20px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-primary); font-size: 14px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-leaf"></i> Чай</a>
         <a href="#cocoa" style="text-decoration: none; padding: 10px 20px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-primary); font-size: 14px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-glass-water"></i> Какао и шоколад</a>
-        <a href="#food" style="text-decoration: none; padding: 10px 20px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-primary); font-size: 14px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-utensils"></i> Еда</a>
-        <a href="#bakery" style="text-decoration: none; padding: 10px 20px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-primary); font-size: 14px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-cookie"></i> Выпечка</a>
+        <a href="#food" style="text-decoration: none; padding: 10px 20px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-primary); font-size: 14px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-utensils"></i> Еда и выпечка</a>
     </div>
 
     <!-- Сетка Меню -->
@@ -33,11 +32,48 @@
             <div id="coffee">
                 <h2 style="font-size: 22px; margin-bottom: 20px; color: #facc15;">Кофе</h2>
                 <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Эспрессо <small style="color: var(--text-secondary);">30 мл</small></span><b>110 ₽</b></div>
-                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Американо <small style="color: var(--text-secondary);">200 мл</small></span><b>150 ₽</b></div>
-                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Капучино <small style="color: var(--text-secondary);">200 / 300 мл</small></span><b>180 / 220 ₽</b></div>
-                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Латте <small style="color: var(--text-secondary);">300 мл</small></span><b>200 ₽</b></div>
-                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Раф кофе <small style="color: var(--text-secondary);">300 мл</small></span><b>250 ₽</b></div>
+                    <div class="menu-item-row">
+                        <span>Эспрессо <small style="color: var(--text-secondary);">30 мл</small></span>
+                        <div class="menu-item-actions">
+                            <b>110 ₽</b>
+                            <button type="button" class="btn-add-cart" onclick="addToCart(1, 'Эспрессо (30 мл)', 110)" title="В корзину"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="menu-item-row">
+                        <span>Американо <small style="color: var(--text-secondary);">200 мл</small></span>
+                        <div class="menu-item-actions">
+                            <b>150 ₽</b>
+                            <button type="button" class="btn-add-cart" onclick="addToCart(2, 'Американо (200 мл)', 150)" title="В корзину"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="menu-item-row">
+                        <span>Капучино <small style="color: var(--text-secondary);">200 мл</small></span>
+                        <div class="menu-item-actions">
+                            <b>180 ₽</b>
+                            <button type="button" class="btn-add-cart" onclick="addToCart(3, 'Капучино (200 мл)', 180)" title="В корзину"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="menu-item-row">
+                        <span>Капучино <small style="color: var(--text-secondary);">300 мл</small></span>
+                        <div class="menu-item-actions">
+                            <b>220 ₽</b>
+                            <button type="button" class="btn-add-cart" onclick="addToCart(4, 'Капучино (300 мл)', 220)" title="В корзину"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="menu-item-row">
+                        <span>Латте <small style="color: var(--text-secondary);">300 мл</small></span>
+                        <div class="menu-item-actions">
+                            <b>200 ₽</b>
+                            <button type="button" class="btn-add-cart" onclick="addToCart(5, 'Латте (300 мл)', 200)" title="В корзину"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="menu-item-row">
+                        <span>Раф кофе <small style="color: var(--text-secondary);">300 мл</small></span>
+                        <div class="menu-item-actions">
+                            <b>250 ₽</b>
+                            <button type="button" class="btn-add-cart" onclick="addToCart(6, 'Раф кофе (300 мл)', 250)" title="В корзину"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -45,11 +81,41 @@
             <div id="author">
                 <h2 style="font-size: 22px; margin-bottom: 20px; color: #facc15;">Авторские напитки</h2>
                 <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Раф Ванильный <small style="color: var(--text-secondary);">300 мл</small></span><b>250 ₽</b></div>
-                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Раф Карамельный <small style="color: var(--text-secondary);">300 мл</small></span><b>260 ₽</b></div>
-                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Матча Латте <small style="color: var(--text-secondary);">300 мл</small></span><b>230 ₽</b></div>
-                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Латте Пряный Ягодный <small style="color: var(--text-secondary);">300 мл</small></span><b>240 ₽</b></div>
-                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Айс Латте Цитрус <small style="color: var(--text-secondary);">350 мл</small></span><b>270 ₽</b></div>
+                    <div class="menu-item-row">
+                        <span>Раф Ванильный <small style="color: var(--text-secondary);">300 мл</small></span>
+                        <div class="menu-item-actions">
+                            <b>250 ₽</b>
+                            <button type="button" class="btn-add-cart" onclick="addToCart(7, 'Раф Ванильный (300 мл)', 250)" title="В корзину"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="menu-item-row">
+                        <span>Раф Карамельный <small style="color: var(--text-secondary);">300 мл</small></span>
+                        <div class="menu-item-actions">
+                            <b>260 ₽</b>
+                            <button type="button" class="btn-add-cart" onclick="addToCart(8, 'Раф Карамельный (300 мл)', 260)" title="В корзину"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="menu-item-row">
+                        <span>Матча Латте <small style="color: var(--text-secondary);">300 мл</small></span>
+                        <div class="menu-item-actions">
+                            <b>230 ₽</b>
+                            <button type="button" class="btn-add-cart" onclick="addToCart(9, 'Матча Латте (300 мл)', 230)" title="В корзину"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="menu-item-row">
+                        <span>Латте Пряный Ягодный <small style="color: var(--text-secondary);">300 мл</small></span>
+                        <div class="menu-item-actions">
+                            <b>240 ₽</b>
+                            <button type="button" class="btn-add-cart" onclick="addToCart(10, 'Латте Пряный Ягодный (300 мл)', 240)" title="В корзину"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="menu-item-row">
+                        <span>Айс Латте Цитрус <small style="color: var(--text-secondary);">350 мл</small></span>
+                        <div class="menu-item-actions">
+                            <b>270 ₽</b>
+                            <button type="button" class="btn-add-cart" onclick="addToCart(11, 'Айс Латте Цитрус (350 мл)', 270)" title="В корзину"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -57,9 +123,27 @@
             <div id="tea">
                 <h2 style="font-size: 22px; margin-bottom: 20px; color: #facc15;">Чай</h2>
                 <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Чёрный / Зелёный <small style="color: var(--text-secondary);">400 мл</small></span><b>160 ₽</b></div>
-                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Облепиховый с имбирём <small style="color: var(--text-secondary);">400 мл</small></span><b>220 ₽</b></div>
-                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Ягодный микс <small style="color: var(--text-secondary);">400 мл</small></span><b>210 ₽</b></div>
+                    <div class="menu-item-row">
+                        <span>Чёрный / Зелёный <small style="color: var(--text-secondary);">400 мл</small></span>
+                        <div class="menu-item-actions">
+                            <b>160 ₽</b>
+                            <button type="button" class="btn-add-cart" onclick="addToCart(12, 'Чай Чёрный/Зелёный (400 мл)', 160)" title="В корзину"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="menu-item-row">
+                        <span>Облепиховый с имбирём <small style="color: var(--text-secondary);">400 мл</small></span>
+                        <div class="menu-item-actions">
+                            <b>220 ₽</b>
+                            <button type="button" class="btn-add-cart" onclick="addToCart(13, 'Чай Облепиховый (400 мл)', 220)" title="В корзину"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="menu-item-row">
+                        <span>Ягодный микс <small style="color: var(--text-secondary);">400 мл</small></span>
+                        <div class="menu-item-actions">
+                            <b>210 ₽</b>
+                            <button type="button" class="btn-add-cart" onclick="addToCart(14, 'Чай Ягодный микс (400 мл)', 210)" title="В корзину"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -67,8 +151,20 @@
             <div id="cocoa">
                 <h2 style="font-size: 22px; margin-bottom: 20px; color: #facc15;">Какао и шоколад</h2>
                 <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Классический Какао <small style="color: var(--text-secondary);">300 мл</small></span><b>190 ₽</b></div>
-                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Горячий шоколад <small style="color: var(--text-secondary);">200 мл</small></span><b>220 ₽</b></div>
+                    <div class="menu-item-row">
+                        <span>Классический Какао <small style="color: var(--text-secondary);">300 мл</small></span>
+                        <div class="menu-item-actions">
+                            <b>190 ₽</b>
+                            <button type="button" class="btn-add-cart" onclick="addToCart(15, 'Классический Какао (300 мл)', 190)" title="В корзину"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="menu-item-row">
+                        <span>Горячий шоколад <small style="color: var(--text-secondary);">200 мл</small></span>
+                        <div class="menu-item-actions">
+                            <b>220 ₽</b>
+                            <button type="button" class="btn-add-cart" onclick="addToCart(16, 'Горячий шоколад (200 мл)', 220)" title="В корзину"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -76,9 +172,27 @@
             <div id="food">
                 <h2 style="font-size: 22px; margin-bottom: 20px; color: #facc15;">Еда и выпечка</h2>
                 <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Круассан классический <small style="color: var(--text-secondary);">80 г</small></span><b>130 ₽</b></div>
-                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Сэндвич с ветчиной и сыром <small style="color: var(--text-secondary);">180 г</small></span><b>240 ₽</b></div>
-                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;"><span>Чизкейк Нью-Йорк <small style="color: var(--text-secondary);">130 г</small></span><b>220 ₽</b></div>
+                    <div class="menu-item-row">
+                        <span>Круассан классический <small style="color: var(--text-secondary);">80 г</small></span>
+                        <div class="menu-item-actions">
+                            <b>130 ₽</b>
+                            <button type="button" class="btn-add-cart" onclick="addToCart(17, 'Круассан классический (80 г)', 130)" title="В корзину"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="menu-item-row">
+                        <span>Сэндвич с ветчиной и сыром <small style="color: var(--text-secondary);">180 г</small></span>
+                        <div class="menu-item-actions">
+                            <b>240 ₽</b>
+                            <button type="button" class="btn-add-cart" onclick="addToCart(18, 'Сэндвич с ветчиной и сыром (180 г)', 240)" title="В корзину"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="menu-item-row">
+                        <span>Чизкейк Нью-Йорк <small style="color: var(--text-secondary);">130 г</small></span>
+                        <div class="menu-item-actions">
+                            <b>220 ₽</b>
+                            <button type="button" class="btn-add-cart" onclick="addToCart(19, 'Чизкейк Нью-Йорк (130 г)', 220)" title="В корзину"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -91,20 +205,26 @@
                 <div style="padding: 15px;">
                     <h3 style="margin: 0 0 5px 0; font-size: 16px;">Капучино</h3>
                     <p style="color: var(--text-secondary); font-size: 13px; margin: 0 0 10px 0;">Классика, которая никогда не подведёт</p>
-                    <b>180 / 220 ₽</b>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <b>180 ₽</b>
+                        <button type="button" class="btn-add-cart" onclick="addToCart(3, 'Капучино (200 мл)', 180)" title="В корзину"><i class="fa-solid fa-plus"></i></button>
+                    </div>
                 </div>
             </div>
 
             <div style="background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden;">
-                 <img src="{{ url_for('static', filename='kruas.jpg') }}" alt="Хрустящий круасан" style="width: 100%; height: 180px; object-fit: cover;">
+                 <img src="{{ url_for('static', filename='kruas.jpg') }}" alt="Хрустящий круассан" style="width: 100%; height: 180px; object-fit: cover;">
                 <div style="padding: 15px;">
-                    <h3 style="margin: 0 0 5px 0; font-size: 16px;">Хрустящий круасан</h3>
-                    <p style="color: var(--text-secondary); font-size: 13px; margin: 0 0 10px 0;">Хрустящий круасан</p>
-                    <b>230 ₽</b>
+                    <h3 style="margin: 0 0 5px 0; font-size: 16px;">Хрустящий круассан</h3>
+                    <p style="color: var(--text-secondary); font-size: 13px; margin: 0 0 10px 0;">Свежая выпечка каждое утро</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <b>230 ₽</b>
+                        <button type="button" class="btn-add-cart" onclick="addToCart(20, 'Хрустящий круассан', 230)" title="В корзину"><i class="fa-solid fa-plus"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
 
     </div>
 </section>
-{% endblock %}
+<!-- {% endblock %} -->
