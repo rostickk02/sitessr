@@ -1,52 +1,46 @@
 {% extends 'base.html' %}
 
-{% block title %}О нас — SIDOROV Coffee{% endblock %}
+{% block title %}О кофейне — SIDOROV{% endblock %}
 
 {% block content %}
-<section class="section">
-    <!-- Шапка страницы -->
-    <div class="section-header">
-        <span class="subtitle">О НАС</span>
-        <h2>SIDOROV — это про кофе, людей и атмосферу</h2>
-    </div>
-
-    <!-- Блок с описанием и фотографией -->
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; margin-bottom: 60px;">
-        <div>
-            <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 15px; line-height: 1.8;">
-                Мы — небольшая локальная кофейня, где каждая деталь продумана для вашего уюта. От отбора свежеобжаренных зёрен спешелти-сегмента до подбора виниловых пластинок на вечер — мы создаем пространство, в которое хочется возвращаться.
-            </p>
-            <p style="color: var(--text-secondary); margin-bottom: 30px; font-size: 15px; line-height: 1.8;">
-                Заходите к нам на утренний эспрессо перед работой, на встречу с друзьями за нежным латте или просто поработать с ноутбуком в тихой и эстетичной обстановке.
-            </p>
-            <a href="{{ url_for('contact') }}" class="btn-primary">Связаться с нами <i class="fa-solid fa-arrow-right"></i></a>
+<section class="page-container">
+    <div class="about-hero">
+        <div class="about-text">
+            <span class="subtitle">О нас</span>
+            <h1>SIDOROV — это про кофе, людей и атмосферу</h1>
+            <p>Мы — небольшая локальная кофейня, где каждая деталь продумана для вашего уюта. От отбора свежеобжаренных зёрен спешелти-сегмента до подбора виниловых пластинок на вечер — мы создаем пространство, в которое хочется возвращаться.</p>
+            <p>Заходите к нам на утренний эспрессо перед работой, на встречу с друзьями за нежным латте или просто поработать с ноутбуком в тихой и эстетичной обстановке.</p>
+            <a href="{{ url_for('contact') }}" class="btn-link">Связаться с нами <i class="fa-solid fa-arrow-right"></i></a>
         </div>
-        <div style="border-radius: 16px; overflow: hidden; border: 1px solid var(--border-color);">
-            <img src="{{ url_for('static', filename='hero.jpg') }}" alt="SIDORO Coffee" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px;">
+        <div class="about-image">
+            <img src="{{ url_for('static', filename='hero-bg.jpg') }}" alt="Интерьер SIDOROV">
         </div>
     </div>
 
-    <!-- Дополнительные ценности -->
-    <div class="features" style="border: 1px solid var(--border-color); border-radius: 16px; padding: 40px;">
-        <div class="feature-card">
-            <i class="fa-solid fa-fire-burner"></i>
-            <h3>Свежая обжарка</h3>
-            <p>Используем только зерна 100% арабики от проверенных обжарщиков</p>
-        </div>
-        <div class="feature-card">
-            <i class="fa-solid fa-heart"></i>
-            <h3>Забота о клиентах</h3>
-            <p>Готовим с любовью и вниманием к каждой детали ваших пожеланий</p>
-        </div>
-        <div class="feature-card">
-            <i class="fa-solid fa-wifi"></i>
-            <h3>Комфортный workflow</h3>
-            <p>Быстрый Wi-Fi и удобные розетки у каждого столика</p>
-        </div>
-        <div class="feature-card">
-            <i class="fa-solid fa-paw"></i>
-            <h3>Pet-Friendly</h3>
-            <p>Всегда рады вашим четвероногим друзьям и предложим им миску воды</p>
+    <!-- Сетка преимуществ -->
+    <div class="features-section">
+        <h2 class="section-title">Почему выбирают нас</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-fire-flame-curved"></i></div>
+                <h3>Свежая обжарка</h3>
+                <p>Используем только зерна 100% арабики от проверенных обжарщиков.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-heart"></i></div>
+                <h3>Забота о клиентах</h3>
+                <p>Готовим с любовью и вниманием к каждой детали ваших пожеланий.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-wifi"></i></div>
+                <h3>Комфортный workflow</h3>
+                <p>Быстрый Wi-Fi и удобные розетки у каждого столика.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-paw"></i></div>
+                <h3>Pet-Friendly</h3>
+                <p>Всегда рады вашим четвероногим друзьям и предложим им миску воды.</p>
+            </div>
         </div>
     </div>
 </section>
