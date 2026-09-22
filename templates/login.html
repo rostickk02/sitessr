@@ -1,34 +1,45 @@
 {% extends 'base.html' %}
 
-{% block title %}Вход в админку — Мой сайт{% endblock %}
+{% block title %}Вход в систему — SIDOROV{% endblock %}
 
 {% block content %}
-<div class="card" style="max-width: 400px; margin: 30px auto; text-align: center;">
-    <h2 style="margin-bottom: 20px;">Вход в Админку 🔒</h2>
-
-    <!-- Уведомление об ошибке, если пароль неверный -->
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <div style="background: #fee2e2; color: #991b1b; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 14px;">
-          {% for message in messages %}
-            {{ message }}
-          {% endfor %}
-        </div>
-      {% endif %}
-    {% endwith %}
-
-    <form action="{{ url_for('login') }}" method="POST">
-        <div style="margin-bottom: 15px; text-align: left;">
-            <label style="display: block; margin-bottom: 5px; font-weight: 600;">Логин:</label>
-            <input type="text" name="username" required placeholder="Введите логин" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; box-sizing: border-box;">
+<div class="login-wrapper">
+    <div class="login-card">
+        <div class="login-header">
+            <span class="login-subtitle">Авторизация</span>
+            <h1 class="login-title">Вход в админку</h1>
         </div>
 
-        <div style="margin-bottom: 20px; text-align: left;">
-            <label style="display: block; margin-bottom: 5px; font-weight: 600;">Пароль:</label>
-            <input type="password" name="password" required placeholder="Введите пароль" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; box-sizing: border-box;">
-        </div>
+        {% if get_flashed_messages() %}
+            <div class="login-alert">
+                {% for message in get_flashed_messages() %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
 
-        <button type="submit" style="width: 100%; padding: 12px; background: #667eea; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Войти</button>
-    </form>
+        <form action="{{ url_for('login') }}" method="POST" class="login-form">
+            <div class="form-group-custom">
+                <label for="username">Логин</label>
+                <div class="input-icon-wrapper">
+                    <i class="fa-regular fa-user"></i>
+                    <input type="text" id="username" name="username" placeholder="Введите логин" required autocomplete="off">
+                </div>
+            </div>
+
+            <div class="form-group-custom">
+                <label for="password">Пароль</label>
+                <div class="input-icon-wrapper">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="password" name="password" placeholder="••••••••" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-login-submit">
+                <span>Войти в систему</span>
+                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            </button>
+        </form>
+    </div>
 </div>
 {% endblock %}
