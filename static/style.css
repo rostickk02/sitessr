@@ -31,19 +31,20 @@ a {
     transition: all 0.3s ease;
 }
 
-/* --- НАВИГАЦИЯ --- */
+/* /* --- ПРОЗРАЧНАЯ НАВИГАЦИЯ --- */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 18px 6%;
-    background: rgba(10, 11, 13, 0.85);
-    backdrop-filter: blur(12px);
-    position: sticky;
+    padding: 22px 6%;
+    background: transparent; /* Делаем фон полностью прозрачным */
+    position: absolute; /* Накладываем шапку поверх фона */
     top: 0;
+    left: 0;
+    width: 100%;
     z-index: 1000;
-    border-bottom: 1px solid var(--border-color);
-}
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* Легкая едва заметная линия */
+} */
 
 .logo-container {
     display: flex;
