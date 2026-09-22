@@ -54,10 +54,11 @@
             </div>
 
             <!-- Встраиваемая интерактивная карта -->
-            <div class="map-container">
-                <iframe src="https://yandex.ru/map-widget/v1/?ll=37.617635%2C55.755814&z=14" width="100%" height="250" frameborder="0" allowfullscreen="true"></iframe>
-            </div>
-        </div>
+            <div style="position:relative; overflow:hidden; border-radius: 12px; border: 1px solid var(--border-color); height: 220px;">
+    <a href="https://yandex.ru/maps/org/sosedi/241208089239/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:0px;display:none;">Соседи</a>
+    <a href="https://yandex.ru/maps/49/penza/category/cafe/184106390/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:14px;display:none;">Кафе в Пензе</a>
+    <iframe src="https://yandex.ru/map-widget/v1/?ll=44.898975%2C53.234898&mode=poi&poi%5Bpoint%5D=44.896839%2C53.234261&poi%5Buri%5D=ymapsbm1%3A%2F%2Forg%3Foid%3D241208089239&utm_source=gemini&z=17.47" width="100%" height="100%" frameborder="0" allowfullscreen="true" style="position:relative; filter: grayscale(0.8) invert(0.9) contrast(1.2);"></iframe>
+</div>
     </div>
 </section>
 {% endblock %}
