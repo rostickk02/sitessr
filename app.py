@@ -41,7 +41,7 @@ class MenuItem(db.Model):
     is_available = db.Column(db.Boolean, default=True) # Стоп-лист
 
 with app.app_context():
-    db.drop_all()  # Пересоздаст таблицы под новую модель MenuItem
+    # db.drop_all()  # Пересоздаст таблицы под новую модель MenuItem
     db.create_all()
 
 # --- ОСНОВНЫЕ МАРШРУТЫ ---
