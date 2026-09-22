@@ -4,10 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}SIDOROV — Кофейня{% endblock %}</title>
+    
+    <!-- Иконки FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Стили библиотеки AOS (Анимации при скролле) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Основные стили проекта -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     
-    <!-- Вшитые стили для модального окна (чтобы ничего не «плыло») -->
+    <!-- Вшитые стили для модального окна -->
     <style>
         /* Скрытие и базовые стили для модального окна */
         .modal-overlay {
@@ -259,5 +266,16 @@
     
     <!-- Подключение JS-скрипта корзины -->
     <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+
+    <!-- Скрипт инициализации AOS (Анимации при скролле) -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,      // Длительность анимации в мс
+            once: true,          // Анимация срабатывает 1 раз при скролле
+            offset: 100,         // Отступ от края экрана
+            easing: 'ease-out'   // Плавное затухание
+        });
+    </script>
 </body>
 </html>
