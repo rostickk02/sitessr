@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
-    <!-- Яркое атмосферное свечение фона -->
+    <!-- Яркое атмосферное свечение фона и адаптивность -->
     <style>
         :root {
             --bg-main: #08080a;
@@ -42,6 +42,63 @@
         .feature-card {
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
+        }
+
+        /* Адаптивность для мобильных устройств (смартфоны и планшеты) */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column !important;
+                padding: 15px 20px !important;
+                gap: 15px !important;
+            }
+
+            .nav-links {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                justify-content: center !important;
+                gap: 15px !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            .nav-links a {
+                font-size: 14px !important;
+            }
+
+            .btn-order {
+                width: 100% !important;
+                text-align: center !important;
+                box-sizing: border-box !important;
+            }
+
+            main {
+                padding: 15px !important;
+            }
+
+            section {
+                padding: 20px 10px !important;
+            }
+
+            /* Превращаем сетки в 1 колонку */
+            div[style*="display: grid"],
+            div[style*="display: flex"][style*="gap"] {
+                flex-direction: column !important;
+                grid-template-columns: 1fr !important;
+                gap: 20px !important;
+            }
+
+            div[style*="background: var(--bg-card)"],
+            div[style*="background: #1a1c20"] {
+                padding: 20px !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            footer {
+                flex-direction: column !important;
+                text-align: center !important;
+                gap: 20px !important;
+            }
         }
     </style>
 </head>
