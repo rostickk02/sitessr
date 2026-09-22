@@ -7,6 +7,42 @@
     <!-- Иконки FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- Новые стили атмосферного фона -->
+    <style>
+        :root {
+            --bg-main: #0a0b0d;
+            --bg-card: rgba(22, 24, 29, 0.75);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-main) !important;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+
+            /* Атмосферный фон с кофейно-золотистыми мягкими бликами */
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(180, 130, 60, 0.18) 0%, transparent 45%),
+                radial-gradient(circle at 85% 65%, rgba(120, 75, 25, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 50% 100%, rgba(200, 150, 80, 0.1) 0%, transparent 55%) !important;
+            background-attachment: fixed !important;
+        }
+
+        /* Эффект матового стекла (Glassmorphism) для карточек */
+        div[style*="background: var(--bg-card)"],
+        div[style*="background: #1a1c20"],
+        .feature-card {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
 </head>
 <body>
 
