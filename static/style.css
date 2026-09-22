@@ -91,6 +91,45 @@ a {
     opacity: 0.7;
 }
 
+/* Стилизация кнопки корзины в шапке */
+.btn-cart-nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 30px;
+    color: #fff;
+    background: transparent;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-cart-nav:hover {
+    border-color: #facc15;
+    color: #facc15;
+    background: rgba(250, 204, 21, 0.05);
+}
+
+/* Жёлтый кружок с количеством */
+.cart-count-badge {
+    background: #facc15;
+    color: #000;
+    font-size: 11px;
+    font-weight: 800;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
 .btn-book {
     border: 1px solid rgba(255, 255, 255, 0.4);
     padding: 8px 22px;
@@ -197,7 +236,7 @@ footer {
 
 /* --- ВНУТРЕННИЕ СТРАНИЦЫ (Меню, О нас, Контакты) --- */
 .page-container {
-    padding: 130px 8% 80px; /* Безопасный отступ сверху, чтобы контент не заходил под фиксированную шапку */
+    padding: 130px 8% 80px;
     max-width: 1400px;
     margin: 0 auto;
     min-height: calc(100vh - 120px);
@@ -421,7 +460,7 @@ footer {
 
 @media (max-width: 768px) {
     .navbar {
-        position: relative; /* На телефонах отменяем абсолютное наложение, чтобы элементы не перекрывали текст */
+        position: relative;
         flex-direction: column;
         gap: 12px;
         padding: 14px 20px;
@@ -469,10 +508,9 @@ footer {
 /* --- СТИЛИ ДЛЯ АДМИН-ПАНЕЛИ --- */
 .admin-container, 
 body > main {
-    padding-top: 110px; /* Безопасный отступ сверху от фиксированной шапки */
+    padding-top: 110px;
 }
 
-/* Исправление сетки формы добавления в админке */
 form .form-row,
 .admin-form-grid {
     display: flex;
@@ -481,7 +519,6 @@ form .form-row,
     align-items: center;
 }
 
-/* Исправление кнопки "Сохранить в меню" */
 .btn-save, 
 button[type="submit"] {
     white-space: nowrap;
@@ -494,7 +531,7 @@ button[type="submit"] {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 120px 20px 60px; /* Отступ сверху от шапки */
+    padding: 120px 20px 60px;
 }
 
 .login-card {
@@ -712,12 +749,11 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus, 
 input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px #222 inset !important; /* Устанавливает цвет фона поля (подберите под ваш цвет input) */
-    -webkit-text-fill-color: #fff !important; /* Делает цвет текста белым */
+    -webkit-box-shadow: 0 0 0 30px #222 inset !important;
+    -webkit-text-fill-color: #fff !important;
     transition: background-color 5000s ease-in-out 0s;
 }
 
-/* Общие стили для полей ввода, чтобы текст никогда не сливался */
 input {
     color: #fff !important;
 }
