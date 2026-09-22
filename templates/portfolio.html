@@ -1,31 +1,88 @@
 {% extends 'base.html' %}
 
-{% block title %}Портфолио — Мой сайт{% endblock %}
+{% block title %}Меню — SIDOROV{% endblock %}
 
 {% block content %}
-<div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-    <h1 style="color: white; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">Мои проекты</h1>
-    <p style="color: #e2e8f0; margin-bottom: 25px;">Проекты, над которыми я работаю и развиваюсь:</p>
+<section class="section">
+    <div class="section-header">
+        <span class="subtitle">МЕНЮ</span>
+        <h2>Вкус в каждой детали</h2>
+        <p style="color: var(--text-secondary); max-width: 600px; margin-top: 10px;">
+            Мы отбираем лучшие сорта кофе, чтобы каждая чашка дарила удовольствие. Здесь вы найдёте как классику, так и авторские напитки.
+        </p>
+    </div>
 
-    <!-- Сетка карточек -->
-    <div class="portfolio-grid">
-        {% for project in projects %}
-            <div class="project-card">
-                <div>
-                    <div class="project-icon">
-                        <i class="{{ project.icon }}"></i>
+    <!-- Отображение динамических позиций из базы данных, если они есть -->
+    {% if projects %}
+        <div class="cards-grid" style="margin-bottom: 50px;">
+            {% for item in projects %}
+                <div class="card-item">
+                    <div class="card-body">
+                        <div style="font-size: 24px; margin-bottom: 10px;"><i class="{{ item.icon }}"></i></div>
+                        <div class="card-title">{{ item.title }}</div>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 10px;">{{ item.description }}</p>
+                        <div class="card-price">
+                            {% for t in item.tech %}
+                                <span style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; font-size: 12px; margin-right: 5px;">{{ t }}</span>
+                            {% endfor %}
+                        </div>
                     </div>
-                    <h2 class="project-title">{{ project.title }}</h2>
-                    <p class="project-desc">{{ project.description }}</p>
                 </div>
-                <!-- Теги технологий -->
-                <div class="tech-tags">
-                    {% for tech in project.tech %}
-                        <span class="tag">{{ tech }}</span>
-                    {% endfor %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Прайс-лист из макета -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; margin-top: 30px;">
+        <!-- Кофе -->
+        <div>
+            <h3 style="font-family: var(--font-serif); font-size: 22px; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Кофе</h3>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 6px;">
+                    <span>Эспрессо <small style="color: var(--text-secondary);">30 мл</small></span>
+                    <strong>110 ₽</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 6px;">
+                    <span>Американо <small style="color: var(--text-secondary);">200 мл</small></span>
+                    <strong>150 ₽</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 6px;">
+                    <span>Капучино <small style="color: var(--text-secondary);">200/300 мл</small></span>
+                    <strong>180 / 220 ₽</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 6px;">
+                    <span>Латте <small style="color: var(--text-secondary);">300 мл</small></span>
+                    <strong>200 ₽</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 6px;">
+                    <span>Раф кофе <small style="color: var(--text-secondary);">300 мл</small></span>
+                    <strong>250 ₽</strong>
                 </div>
             </div>
-        {% endfor %}
+        </div>
+
+        <!-- Авторские напитки -->
+        <div>
+            <h3 style="font-family: var(--font-serif); font-size: 22px; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Авторские напитки</h3>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 6px;">
+                    <span>Раф ванильный <small style="color: var(--text-secondary);">300 мл</small></span>
+                    <strong>250 ₽</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 6px;">
+                    <span>Раф карамельный <small style="color: var(--text-secondary);">300 мл</small></span>
+                    <strong>260 ₽</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 6px;">
+                    <span>Матча латте <small style="color: var(--text-secondary);">300 мл</small></span>
+                    <strong>230 ₽</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 6px;">
+                    <span>Латте пряный <small style="color: var(--text-secondary);">300 мл</small></span>
+                    <strong>240 ₽</strong>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</section>
 {% endblock %}
