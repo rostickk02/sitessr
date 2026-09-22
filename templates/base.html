@@ -3,57 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Мой сайт{% endblock %}</title>
+    <title>{% block title %}SIDOROV — Кофейня{% endblock %}</title>
+    <!-- Иконки FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <!-- Подключение иконок Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
-    <!-- Навигационная шапка -->
-    <nav>
-        <a href="{{ url_for('home') }}">Главная</a>
-        <a href="{{ url_for('about') }}">О себе</a>
-        <a href="{{ url_for('portfolio') }}">Портфолио</a>
-        <a href="{{ url_for('contact') }}">Контакты</a>
-        
-        <!-- Кнопка переключения темы -->
-        <button id="theme-toggle" class="theme-toggle-btn" title="Сменить тему">
-            <i id="theme-icon" class="fa-solid fa-moon"></i>
-        </button>
+    <!-- Шапка -->
+    <nav class="navbar">
+        <a href="{{ url_for('home') }}" class="logo">SIDOROV</a>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}">Главная</a></li>
+            <li><a href="{{ url_for('portfolio') }}">Меню</a></li>
+            <li><a href="{{ url_for('about') }}">О нас</a></li>
+            <li><a href="{{ url_for('contact') }}">Контакты</a></li>
+        </ul>
+        <a href="{{ url_for('contact') }}" class="btn-order">Заказать <i class="fa-solid fa-mug-hot"></i></a>
     </nav>
 
     <!-- Основной контент страницы -->
-    <div class="container">
+    <main>
         {% block content %}{% endblock %}
-    </div>
+    </main>
 
-    <!-- JavaScript для переключения темы -->
-    <script>
-        const toggleBtn = document.getElementById('theme-toggle');
-        const themeIcon = document.getElementById('theme-icon');
-        const body = document.body;
-
-        // Проверяем, сохранены ли настройки темы в браузере
-        const currentTheme = localStorage.getItem('theme');
-        if (currentTheme === 'dark') {
-            body.classList.add('dark-mode');
-            themeIcon.classList.replace('fa-moon', 'fa-sun');
-        }
-
-        // Переключение темы при клике
-        toggleBtn.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
-
-            if (body.classList.contains('dark-mode')) {
-                themeIcon.classList.replace('fa-moon', 'fa-sun');
-                localStorage.setItem('theme', 'dark');
-            } else {
-                themeIcon.classList.replace('fa-sun', 'fa-moon');
-                localStorage.setItem('theme', 'light');
-            }
-        });
-    </script>
+    <!-- Подвал -->
+    <footer>
+        <div>
+            <div class="footer-logo">SIDOROV</div>
+            <p>КОФЕЙНЯ</p>
+        </div>
+        <div>
+            <p>📍 ул. Рябиновая, 42</p>
+            <p>🕒 Пн-Вс: 08:00 – 22:00</p>
+        </div>
+        <div>
+            <p>📞 +7 (902) 049-50-60</p>
+            <p>📷 @sidorov.coffee</p>
+        </div>
+    </footer>
 
 </body>
 </html>
