@@ -465,3 +465,25 @@ footer {
         text-align: center;
     }
 }
+
+/* --- СТИЛИ ДЛЯ АДМИН-ПАНЕЛИ --- */
+.admin-container, 
+body > main {
+    padding-top: 110px; /* Безопасный отступ сверху от фиксированной шапки */
+}
+
+/* Исправление сетки формы добавления в админке */
+form .form-row,
+.admin-form-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+}
+
+/* Исправление кнопки "Сохранить в меню" */
+.btn-save, 
+button[type="submit"] {
+    white-space: nowrap;
+    height: 100%;
+}
