@@ -4,128 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}SIDOROV — Кофейня{% endblock %}</title>
-    <!-- Иконки FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
-    <!-- Яркое атмосферное свечение фона и адаптивность -->
-    <style>
-        :root {
-            --bg-main: #08080a;
-            --bg-card: rgba(22, 24, 29, 0.7);
-            --border-color: rgba(255, 255, 255, 0.1);
-            --text-primary: #f3f4f6;
-            --text-secondary: #9ca3af;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-main) !important;
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            overflow-x: hidden;
-
-            /* Яркие кофейно-золотые световые пятна (Glow effect) */
-            background-image: 
-                radial-gradient(circle at 10% 15%, rgba(225, 150, 50, 0.35) 0%, transparent 50%),
-                radial-gradient(circle at 90% 55%, rgba(190, 100, 20, 0.30) 0%, transparent 55%),
-                radial-gradient(circle at 45% 90%, rgba(240, 170, 70, 0.25) 0%, transparent 50%),
-                radial-gradient(circle at 70% 10%, rgba(160, 80, 20, 0.20) 0%, transparent 40%) !important;
-            background-attachment: fixed !important;
-        }
-
-        /* Эффект матового стекла для контраста карточек с фоном */
-        div[style*="background: var(--bg-card)"],
-        div[style*="background: #1a1c20"],
-        .feature-card {
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-        }
-
-        /* Адаптивность для мобильных устройств (смартфоны и планшеты) */
-        @media (max-width: 768px) {
-            .navbar {
-                flex-direction: column !important;
-                padding: 15px 20px !important;
-                gap: 15px !important;
-            }
-
-            .nav-links {
-                display: flex !important;
-                flex-wrap: wrap !important;
-                justify-content: center !important;
-                gap: 15px !important;
-                padding: 0 !important;
-                margin: 0 !important;
-            }
-
-            .nav-links a {
-                font-size: 14px !important;
-            }
-
-            .btn-order {
-                width: 100% !important;
-                text-align: center !important;
-                box-sizing: border-box !important;
-            }
-
-            main {
-                padding: 15px !important;
-            }
-
-            section {
-                padding: 20px 10px !important;
-            }
-
-            /* Превращаем сетки в 1 колонку */
-            div[style*="display: grid"],
-            div[style*="display: flex"][style*="gap"] {
-                flex-direction: column !important;
-                grid-template-columns: 1fr !important;
-                gap: 20px !important;
-            }
-
-            div[style*="background: var(--bg-card)"],
-            div[style*="background: #1a1c20"] {
-                padding: 20px !important;
-                width: 100% !important;
-                box-sizing: border-box !important;
-            }
-
-            footer {
-                flex-direction: column !important;
-                text-align: center !important;
-                gap: 20px !important;
-            }
-        }
-    </style>
 </head>
 <body>
 
     <!-- Шапка -->
     <nav class="navbar">
-        <a href="{{ url_for('home') }}" class="logo">SIDOROV</a>
+        <a href="{{ url_for('home') }}" class="logo-container">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="SIDOROV Logo" class="nav-logo-img">
+        </a>
+
         <ul class="nav-links">
-            <li><a href="{{ url_for('home') }}">Главная</a></li>
+            <li><a href="{{ url_for('about') }}">О кофейне</a></li>
             <li><a href="{{ url_for('portfolio') }}">Меню</a></li>
-            <li><a href="{{ url_for('about') }}">О нас</a></li>
             <li><a href="{{ url_for('contact') }}">Контакты</a></li>
         </ul>
-        <a href="{{ url_for('contact') }}" class="btn-order">Заказать <i class="fa-solid fa-mug-hot"></i></a>
+
+        <div class="nav-actions">
+            <a href="#" class="icon-btn"><i class="fa-solid fa-magnifying-glass"></i></a>
+            <a href="#" class="icon-btn"><i class="fa-solid fa-bag-shopping"></i></a>
+            <a href="{{ url_for('contact') }}" class="btn-book">Забронировать</a>
+        </div>
     </nav>
 
-    <!-- Основной контент страницы -->
+    <!-- Основной контент -->
     <main>
         {% block content %}{% endblock %}
     </main>
 
     <!-- Подвал -->
     <footer>
-        <div>
-            <div class="footer-logo">SIDOROV</div>
-            <p>КОФЕЙНЯ</p>
+        <div class="footer-logo-wrap">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="SIDOROV" class="footer-logo-img">
         </div>
         <div>
             <p>📍 ул. Рябиновая, 42</p>
