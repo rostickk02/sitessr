@@ -22,8 +22,14 @@
         </ul>
 
         <div class="nav-actions">
-            <a href="#" class="icon-btn"><i class="fa-solid fa-magnifying-glass"></i></a>
-            <a href="#" class="icon-btn"><i class="fa-solid fa-bag-shopping"></i></a>
+            <a href="#" class="icon-btn" title="Поиск"><i class="fa-solid fa-magnifying-glass"></i></a>
+            
+            <!-- Кнопка корзины со счетчиком -->
+            <button type="button" class="icon-btn cart-btn" onclick="toggleCartModal()" title="Корзина">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <span id="cart-badge" class="cart-badge" style="display: none;">0</span>
+            </button>
+            
             <a href="{{ url_for('contact') }}" class="btn-book">Забронировать</a>
         </div>
     </nav>
@@ -32,6 +38,54 @@
     <main>
         {% block content %}{% endblock %}
     </main>
+
+    <!-- Модальное окно корзины (Take Away) -->
+    <div id="cart-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Ваш предзаказ (Take Away)</h2>
+                <button type="button" class="modal-close" onclick="toggleCartModal()">&times;</button>
+            </div>
+
+            <div id="cart-items-list" class="cart-items-list">
+                <!-- Сюда JS выводит список добавленных позиций -->
+            </div>
+
+            <div class="cart-summary">
+                <span>Итого к оплате:</span>
+                <strong id="cart-total-price">0 ₽</strong>
+            </div>
+
+            <!-- Форма оформления заказа -->
+            <form action="{{ url_for('create_takeaway_order') }}" method="POST" class="takeaway-form">
+                <input type="hidden" name="cart_data" id="cart-items-json">
+
+                <div class="form-group-custom">
+                    <label for="customer_name">Имя</label>
+                    <input type="text" id="customer_name" name="customer_name" placeholder="Как к вам обращаться?" required>
+                </div>
+
+                <div class="form-group-custom">
+                    <label for="customer_phone">Телефон</label>
+                    <input type="tel" id="customer_phone" name="customer_phone" placeholder="+7 (999) 000-00-00" required>
+                </div>
+
+                <div class="form-group-custom">
+                    <label for="pickup_time">Время самовывоза</label>
+                    <input type="time" id="pickup_time" name="pickup_time" required>
+                </div>
+
+                <div class="form-group-custom">
+                    <label for="comment">Комментарий к заказу</label>
+                    <input type="text" id="comment" name="comment" placeholder="Например: овсяное молоко, без сахара">
+                </div>
+
+                <button type="submit" class="btn-submit" onclick="localStorage.removeItem('sidorov_cart')">
+                    Оформить предзаказ
+                </button>
+            </form>
+        </div>
+    </div>
 
     <!-- Подвал -->
     <footer>
@@ -48,5 +102,7 @@
         </div>
     </footer>
 
+    <!-- Подключение JS-скрипта корзины -->
+    <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
 </body>
 </html>
