@@ -1,5 +1,6 @@
 import os
 import json
+import requests
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -9,6 +10,27 @@ app.secret_key = os.environ.get('SECRET_KEY', 'super_secret_key_change_me')
 
 ADMIN_USERNAME = 'admin'
 ADMIN_PASSWORD = 'admin123'
+
+# --- НАСТРОЙКИ TELEGRAM БОТА ---
+TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN', 'YOUR_BOT_TOKEN_HERE')
+TELEGRAM_CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID', 'YOUR_CHAT_ID_HERE')
+
+def send_telegram_notification(text):
+    """Отправка сообщений в Telegram"""
+    if TELEGRAM_BOT_TOKEN == 'YOUR_BOT_TOKEN_HERE' or not TELEGRAM_BOT_TOKEN:
+        print("Telegram Bot Token не настроен.")
+        return
+    
+    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+    payload = {
+        "chat_id": TELEGRAM_CHAT_ID,
+        "text": text,
+        "parse_mode": "HTML"
+    }
+    try:
+        requests.post(url, json=payload, timeout=5)
+    except Exception as e:
+        print(f"Ошибка отправки в Telegram: {e}")
 
 # --- ПОДКЛЮЧЕНИЕ К БАЗЕ ДАННЫХ ---
 db_url = os.environ.get('DATABASE_URL', 'sqlite:///site.db')
@@ -22,39 +44,35 @@ db = SQLAlchemy(app)
 
 # --- МОДЕЛИ БАЗЫ ДАННЫХ ---
 
-# 1. Сообщения и бронирования
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), nullable=False)
     user_message = db.Column(db.Text, nullable=False)
     date = db.Column(db.DateTime, default=datetime.utcnow)
     is_read = db.Column(db.Boolean, default=False)
-    status = db.Column(db.String(50), default='Новая') # Новая, Подтверждена, Отклонена
+    status = db.Column(db.String(50), default='Новая')
 
-# 2. Позиции меню кофейни
 class MenuItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(150), nullable=False)
-    category = db.Column(db.String(100), nullable=False, default='Кофе') # Кофе, Авторские, Чай, Выпечка
-    price = db.Column(db.String(50), nullable=False) # e.g. "180 ₽" или "180 / 220 ₽"
+    category = db.Column(db.String(100), nullable=False, default='Кофе')
+    price = db.Column(db.String(50), nullable=False)
     volume = db.Column(db.String(50), default='300 мл')
     description = db.Column(db.Text, nullable=True)
-    is_available = db.Column(db.Boolean, default=True) # Стоп-лист
+    is_available = db.Column(db.Boolean, default=True)
 
-# 3. Предзаказы (Take Away)
 class TakeawayOrder(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     customer_name = db.Column(db.String(100), nullable=False)
     customer_phone = db.Column(db.String(50), nullable=False)
     pickup_time = db.Column(db.String(20), nullable=False)
-    items_summary = db.Column(db.Text, nullable=False) # Итоговый список позиций
-    total_price = db.Column(db.Integer, nullable=False) # Общая сумма
+    items_summary = db.Column(db.Text, nullable=False)
+    total_price = db.Column(db.Integer, nullable=False)
     comment = db.Column(db.Text, nullable=True)
     date = db.Column(db.DateTime, default=datetime.utcnow)
     is_completed = db.Column(db.Boolean, default=False)
 
 with app.app_context():
-    # db.drop_all()  # Раскомментируйте, если требуется пересоздать таблицы с нуля
     db.create_all()
 
 # --- ОСНОВНЫЕ МАРШРУТЫ ---
@@ -82,11 +100,17 @@ def contact():
         db.session.add(new_msg)
         db.session.commit()
 
+        # Уведомление в Telegram
+        tg_message = (
+            f"📩 <b>НОВАЯ БРОНЬ / СООБЩЕНИЕ</b>\n\n"
+            f"👤 <b>От кого:</b> {name}\n"
+            f"💬 <b>Текст:</b> {msg}"
+        )
+        send_telegram_notification(tg_message)
+
         return render_template('contact.html', name=name, message=msg)
 
     return render_template('contact.html')
-
-# --- ОБРАБОТКА ПРЕДЗАКАЗА (TAKE AWAY) ---
 
 @app.route('/takeaway', methods=['POST'])
 def create_takeaway_order():
@@ -94,7 +118,7 @@ def create_takeaway_order():
     name = request.form.get('customer_name')
     phone = request.form.get('customer_phone')
     pickup_time = request.form.get('pickup_time')
-    comment = request.form.get('comment')
+    comment = request.form.get('comment') or "Нет"
 
     if not raw_cart or raw_cart == '[]':
         flash('Ваша корзина пуста!')
@@ -106,7 +130,6 @@ def create_takeaway_order():
         flash('Ошибка обработки корзины!')
         return redirect(url_for('portfolio'))
 
-    # Формируем читаемую строку со списком заказанных позиций
     items_summary = ", ".join([f"{item['name']} x{item['quantity']}" for item in cart_items])
     total_price = sum(item['price'] * item['quantity'] for item in cart_items)
 
@@ -122,10 +145,22 @@ def create_takeaway_order():
     db.session.add(new_order)
     db.session.commit()
 
-    flash('Ваш предзаказ успешно оформлен! Ждём вас в назначеское время.')
+    # Уведомление в Telegram
+    tg_message = (
+        f"🛍 <b>НОВЫЙ ПРЕДЗАКАЗ (Take Away)</b>\n\n"
+        f"👤 <b>Имя:</b> {name}\n"
+        f"📞 <b>Телефон:</b> {phone}\n"
+        f"⏰ <b>Самовывоз:</b> {pickup_time}\n"
+        f"🛒 <b>Заказ:</b> {items_summary}\n"
+        f"💰 <b>Сумма:</b> {total_price} ₽\n"
+        f"💬 <b>Коммент:</b> {comment}"
+    )
+    send_telegram_notification(tg_message)
+
+    flash('Ваш предзаказ успешно оформлен!')
     return redirect(url_for('portfolio'))
 
-# --- АВТОРИЗАЦИЯ ---
+# --- АВТОРИЗАЦИЯ И АДМИНКА ---
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -146,8 +181,6 @@ def logout():
     session.pop('logged_in', None)
     return redirect(url_for('login'))
 
-# --- КАБИНЕТ АДМИНИСТРАТОРА ---
-
 @app.route('/admin')
 def admin():
     if not session.get('logged_in'):
@@ -157,6 +190,29 @@ def admin():
     menu_items = MenuItem.query.all()
     takeaway_orders = TakeawayOrder.query.order_by(TakeawayOrder.date.desc()).all()
 
+    # Сбор данных для аналитики
+    days_map = {0: 'Пн', 1: 'Вт', 2: 'Ср', 3: 'Чт', 4: 'Пт', 5: 'Сб', 6: 'Вс'}
+    bookings_by_day = [0] * 7
+    for msg in messages:
+        if msg.date:
+            bookings_by_day[msg.date.weekday()] += 1
+
+    items_count = {}
+    for order in takeaway_orders:
+        parts = order.items_summary.split(',')
+        for part in parts:
+            part = part.strip()
+            if ' x' in part:
+                name, qty = part.rsplit(' x', 1)
+                try:
+                    items_count[name] = items_count.get(name, 0) + int(qty)
+                except ValueError:
+                    pass
+
+    sorted_items = sorted(items_count.items(), key=lambda x: x[1], reverse=True)[:5]
+    popular_labels = [item[0] for item in sorted_items] or ["Нет данных"]
+    popular_data = [item[1] for item in sorted_items] or [0]
+
     stats = {
         'total_messages': len(messages),
         'unread_messages': Message.query.filter_by(is_read=False).count(),
@@ -165,9 +221,18 @@ def admin():
         'total_takeaway': len(takeaway_orders)
     }
 
-    return render_template('admin.html', messages=messages, menu_items=menu_items, takeaway_orders=takeaway_orders, stats=stats)
+    return render_template(
+        'admin.html', 
+        messages=messages, 
+        menu_items=menu_items, 
+        takeaway_orders=takeaway_orders, 
+        stats=stats,
+        chart_days_labels=list(days_map.values()),
+        chart_days_data=bookings_by_day,
+        popular_labels=popular_labels,
+        popular_data=popular_data
+    )
 
-# Добавление новой позиции в меню
 @app.route('/admin/add_menu_item', methods=['POST'])
 def add_menu_item():
     if not session.get('logged_in'):
@@ -182,10 +247,9 @@ def add_menu_item():
     new_item = MenuItem(title=title, category=category, price=price, volume=volume, description=description)
     db.session.add(new_item)
     db.session.commit()
-    flash('Позиция успешно добавлена в меню кофейни!')
+    flash('Позиция добавлена!')
     return redirect(url_for('admin'))
 
-# Переключение стоп-листа (В наличии / Нет в наличии)
 @app.route('/admin/toggle_availability/<int:item_id>', methods=['POST'])
 def toggle_availability(item_id):
     if not session.get('logged_in'):
@@ -196,7 +260,6 @@ def toggle_availability(item_id):
     db.session.commit()
     return redirect(url_for('admin'))
 
-# Удаление позиции из меню
 @app.route('/admin/delete_menu_item/<int:item_id>', methods=['POST'])
 def delete_menu_item(item_id):
     if not session.get('logged_in'):
@@ -205,10 +268,9 @@ def delete_menu_item(item_id):
     item = MenuItem.query.get_or_404(item_id)
     db.session.delete(item)
     db.session.commit()
-    flash('Позиция удалена из меню!')
+    flash('Позиция удалена!')
     return redirect(url_for('admin'))
 
-# Управление статусом заявки / сообщения
 @app.route('/admin/toggle_read/<int:msg_id>', methods=['POST'])
 def toggle_read(msg_id):
     if not session.get('logged_in'):
@@ -230,7 +292,6 @@ def delete_message(msg_id):
     flash('Заявка удалена!')
     return redirect(url_for('admin'))
 
-# Отметка или удаление предзаказов из админки
 @app.route('/admin/delete_takeaway/<int:order_id>', methods=['POST'])
 def delete_takeaway(order_id):
     if not session.get('logged_in'):
