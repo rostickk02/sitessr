@@ -1,22 +1,72 @@
 {% extends 'base.html' %}
 
-{% block title %}Контакты — Мой сайт{% endblock %}
+{% block title %}Контакты — SIDOROV Coffee{% endblock %}
 
 {% block content %}
-<div class="card">
-    <h1>Обратная связь 📬</h1>
-    
-    {% if name %}
-        <!-- Показываем это сообщение ПОСЛЕ отправки формы -->
-        <p>Спасибо, <strong>{{ name }}</strong>! Ваше сообщение: «{{ message }}» принято!</p>
-        <a href="{{ url_for('contact') }}" class="btn">Отправить еще</a>
-    {% else %}
-        <!-- Показываем форму ДО отправки -->
-        <form action="{{ url_for('contact') }}" method="POST">
-            <input type="text" name="username" placeholder="Ваше имя" required>
-            <textarea name="user_message" rows="4" placeholder="Ваше сообщение" required></textarea>
-            <button type="submit" class="btn">Отправить</button>
-        </form>
-    {% endif %}
-</div>
+<section class="section">
+    <div class="section-header">
+        <span class="subtitle">КОНТАКТЫ</span>
+        <h2>Ждем вас в гости</h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px;">
+        <!-- Левая колонка: Форма обратной связи -->
+        <div style="background: var(--bg-card); padding: 35px; border-radius: 16px; border: 1px solid var(--border-color);">
+            <h3 style="font-family: var(--font-serif); font-size: 22px; margin-bottom: 10px; font-weight: 400;">Напишите нам</h3>
+            <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 25px;">Забронировать столик, задать вопрос или оставить отзыв:</p>
+
+            {% if name %}
+                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; color: #34d399; padding: 15px; border-radius: 10px; margin-bottom: 20px; font-size: 14px;">
+                    Спасибо, {{ name }}! Ваше сообщение отправлено бариста.
+                </div>
+            {% endif %}
+
+            <form action="{{ url_for('contact') }}" method="POST" style="display: flex; flex-direction: column; gap: 15px;">
+                <div>
+                    <label style="display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px;">Ваше имя</label>
+                    <input type="text" name="username" required placeholder="Иван" style="width: 100%; padding: 12px 16px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 8px; color: white; outline: none; font-size: 14px;">
+                </div>
+                <div>
+                    <label style="display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px;">Сообщение / Вопрос</label>
+                    <textarea name="user_message" required placeholder="Хочу забронировать столик на двоих..." style="width: 100%; height: 110px; padding: 12px 16px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 8px; color: white; outline: none; font-size: 14px; resize: vertical;"></textarea>
+                </div>
+                <button type="submit" class="btn-primary" style="justify-content: center; cursor: pointer; border: none; margin-top: 10px;">Отправить сообщение</button>
+            </form>
+        </div>
+
+        <!-- Правая колонка: Информация и карта -->
+        <div style="display: flex; flex-direction: column; gap: 25px; justify-content: space-between;">
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <div style="display: flex; gap: 15px; align-items: flex-start;">
+                    <i class="fa-solid fa-location-dot" style="font-size: 20px; margin-top: 3px; color: var(--text-primary);"></i>
+                    <div>
+                        <h4 style="font-size: 16px; font-weight: 500;">Адрес</h4>
+                        <p style="color: var(--text-secondary); font-size: 14px;">ул. Рябиновая, 42</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 15px; align-items: flex-start;">
+                    <i class="fa-solid fa-clock" style="font-size: 20px; margin-top: 3px; color: var(--text-primary);"></i>
+                    <div>
+                        <h4 style="font-size: 16px; font-weight: 500;">Режим работы</h4>
+                        <p style="color: var(--text-secondary); font-size: 14px;">Пн — Вс: 08:00 – 22:00</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 15px; align-items: flex-start;">
+                    <i class="fa-solid fa-phone" style="font-size: 20px; margin-top: 3px; color: var(--text-primary);"></i>
+                    <div>
+                        <h4 style="font-size: 16px; font-weight: 500;">Телефон / Telegram</h4>
+                        <p style="color: var(--text-secondary); font-size: 14px;">+7 (902) 049-50-52</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Декоративный блок / карта -->
+            <div style="background: var(--bg-card); height: 200px; border-radius: 12px; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; color: var(--text-secondary); font-size: 14px;">
+                <i class="fa-solid fa-map-pin" style="margin-right: 8px;"></i> Яндекс.Карты / 2ГИС
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
