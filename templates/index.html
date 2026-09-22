@@ -1,80 +1,30 @@
 {% extends 'base.html' %}
 
-{% block title %}SIDOROV — Хороший кофе делает день лучше{% endblock %}
+{% block title %}SIDOROV — Хороший кофе в лучшее время{% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
-<section class="hero">
-    <div>
-        <span class="subtitle">КОФЕЙНЯ SIDOROV</span>
-        <h1>Хороший кофе делает день лучше</h1>
-        <p>Атмосферная кофейня с вкусным кофе, свежей выпечкой и уютной обстановкой.</p>
-        <a href="{{ url_for('portfolio') }}" class="btn-primary">Посмотреть меню <i class="fa-solid fa-arrow-right"></i></a>
-    </div>
-    <div class="hero-img-container">
-        <img src="https://usagif.com/wp-content/uploads/gifs/coffee-1.gif" alt="SIDOROV Coffee" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px;">
-    </div>
-</section>
-
-<!-- Преимущества -->
-<section class="features">
-    <div class="feature-card">
-        <i class="fa-solid fa-seedling"></i>
-        <h3>Отборные зёрна</h3>
-        <p>Только качественный кофе из лучших регионов</p>
-    </div>
-    <div class="feature-card">
-        <i class="fa-solid fa-mug-saucer"></i>
-        <h3>Авторские напитки</h3>
-        <p>Классика и уникальные рецепты</p>
-    </div>
-    <div class="feature-card">
-        <i class="fa-solid fa-bread-slice"></i>
-        <h3>Свежая выпечка</h3>
-        <p>Каждый день свежие десерты</p>
-    </div>
-    <div class="feature-card">
-        <i class="fa-solid fa-user-group"></i>
-        <h3>Уютная атмосфера</h3>
-        <p>Идеальное место для работы и отдыха</p>
+<section class="hero-banner">
+    <div class="hero-content">
+        <h1 class="hero-title">
+            Хороший<br>кофе —<br>в лучшее<br>время
+        </h1>
+        <p class="hero-description">
+            SIDOROV — это место, где вкус, атмосфера и люди создают особенное настроение.
+        </p>
+        <a href="{{ url_for('portfolio') }}" class="btn-white">
+            Перейти в меню <i class="fa-solid fa-arrow-right"></i>
+        </a>
     </div>
 </section>
 
-<!-- Популярное из меню -->
-<section class="section">
-    <div class="section-header">
-        <span class="subtitle">МЕНЮ</span>
-        <h2>Наши напитки</h2>
+<!-- Нижняя плашка -->
+<section class="bottom-bar">
+    <div class="bottom-bar-logo">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="SIDOROV Coffee">
     </div>
-    <div class="cards-grid">
-        <div class="card-item">
-            <img src="https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?q=80&w=400&auto=format&fit=crop" alt="Эспрессо">
-            <div class="card-body">
-                <div class="card-title">Эспрессо</div>
-                <div class="card-price">110 ₽</div>
-            </div>
-        </div>
-        <div class="card-item">
-            <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?q=80&w=400&auto=format&fit=crop" alt="Капучино">
-            <div class="card-body">
-                <div class="card-title">Капучино</div>
-                <div class="card-price">180 ₽</div>
-            </div>
-        </div>
-        <div class="card-item">
-            <img src="https://images.unsplash.com/photo-1534778101976-62847782c213?q=80&w=400&auto=format&fit=crop" alt="Латте">
-            <div class="card-body">
-                <div class="card-title">Латте</div>
-                <div class="card-price">200 ₽</div>
-            </div>
-        </div>
-        <div class="card-item">
-            <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=400&auto=format&fit=crop" alt="Круассан">
-            <div class="card-body">
-                <div class="card-title">Круассан</div>
-                <div class="card-price">120 ₽</div>
-            </div>
-        </div>
+    <div class="bottom-bar-text">
+        Больше, чем просто кофе
     </div>
 </section>
 {% endblock %}
