@@ -1,11 +1,80 @@
 {% extends 'base.html' %}
 
-{% block title %}Главная — Мой сайт{% endblock %}
+{% block title %}SIDOROV — Хороший кофе делает день лучше{% endblock %}
 
 {% block content %}
-<div class="card">
-    <h1>Привет! 👋</h1>
-    <p>Это мой первый сайт на Python!</p>
-    <a href="{{ url_for('contact') }}" class="btn">Написать мне</a>
-</div>
-{% endblock %} 
+<!-- Hero Section -->
+<section class="hero">
+    <div>
+        <span class="subtitle">КОФЕЙНЯ SIDOROV</span>
+        <h1>Хороший кофе делает день лучше</h1>
+        <p>Атмосферная кофейня с вкусным кофе, свежей выпечкой и уютной обстановкой.</p>
+        <a href="{{ url_for('portfolio') }}" class="btn-primary">Посмотреть меню <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="hero-img-container">
+        <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=800&auto=format&fit=crop" alt="Чашка кофе SIDOROV">
+    </div>
+</section>
+
+<!-- Преимущества -->
+<section class="features">
+    <div class="feature-card">
+        <i class="fa-solid fa-seedling"></i>
+        <h3>Отборные зёрна</h3>
+        <p>Только качественный кофе из лучших регионов</p>
+    </div>
+    <div class="feature-card">
+        <i class="fa-solid fa-mug-saucer"></i>
+        <h3>Авторские напитки</h3>
+        <p>Классика и уникальные рецепты</p>
+    </div>
+    <div class="feature-card">
+        <i class="fa-solid fa-bread-slice"></i>
+        <h3>Свежая выпечка</h3>
+        <p>Каждый день свежие десерты</p>
+    </div>
+    <div class="feature-card">
+        <i class="fa-solid fa-user-group"></i>
+        <h3>Уютная атмосфера</h3>
+        <p>Идеальное место для работы и отдыха</p>
+    </div>
+</section>
+
+<!-- Популярное из меню -->
+<section class="section">
+    <div class="section-header">
+        <span class="subtitle">МЕНЮ</span>
+        <h2>Наши напитки</h2>
+    </div>
+    <div class="cards-grid">
+        <div class="card-item">
+            <img src="https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?q=80&w=400&auto=format&fit=crop" alt="Эспрессо">
+            <div class="card-body">
+                <div class="card-title">Эспрессо</div>
+                <div class="card-price">110 ₽</div>
+            </div>
+        </div>
+        <div class="card-item">
+            <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?q=80&w=400&auto=format&fit=crop" alt="Капучино">
+            <div class="card-body">
+                <div class="card-title">Капучино</div>
+                <div class="card-price">180 ₽</div>
+            </div>
+        </div>
+        <div class="card-item">
+            <img src="https://images.unsplash.com/photo-1534778101976-62847782c213?q=80&w=400&auto=format&fit=crop" alt="Латте">
+            <div class="card-body">
+                <div class="card-title">Латте</div>
+                <div class="card-price">200 ₽</div>
+            </div>
+        </div>
+        <div class="card-item">
+            <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=400&auto=format&fit=crop" alt="Круассан">
+            <div class="card-body">
+                <div class="card-title">Круассан</div>
+                <div class="card-price">120 ₽</div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
