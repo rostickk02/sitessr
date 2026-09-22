@@ -14,11 +14,45 @@
     <!-- Основные стили проекта -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     
-    <!-- Вшитые стили для модального окна -->
+    <!-- Вшитые стили для модального окна и обновленной кнопки корзины -->
     <style>
+        /* Стилизация кнопки корзины в шапке */
+        .btn-cart-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 30px;
+            color: #fff;
+            background: transparent;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cart-nav:hover {
+            border-color: #facc15;
+            color: #facc15;
+            background: rgba(250, 204, 21, 0.05);
+        }
+
+        .cart-count-badge {
+            background: #facc15;
+            color: #000;
+            font-size: 11px;
+            font-weight: 800;
+            border-radius: 50%;
+            padding: 2px 6px;
+            line-height: 1;
+        }
+
         /* Скрытие и базовые стили для модального окна */
         .modal-overlay {
-            display: none; /* Скрываем по умолчанию */
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
@@ -33,7 +67,6 @@
             box-sizing: border-box;
         }
 
-        /* Показываем окно при добавлении класса active */
         .modal-overlay.active {
             display: flex !important;
         }
@@ -105,7 +138,6 @@
             font-size: 22px;
         }
 
-        /* Стилизация формы внутри модального окна */
         .takeaway-form {
             display: flex;
             flex-direction: column;
@@ -176,15 +208,12 @@
         </ul>
 
         <div class="nav-actions">
-            <a href="#" class="icon-btn" title="Поиск"><i class="fa-solid fa-magnifying-glass"></i></a>
-            
-            <!-- Кнопка корзины со счетчиком -->
-            <button type="button" class="icon-btn cart-btn" onclick="toggleCartModal()" title="Корзина">
+            <!-- Кнопка Корзины вместо поиска и бронирования -->
+            <button type="button" class="btn-cart-nav" onclick="toggleCartModal()">
                 <i class="fa-solid fa-bag-shopping"></i>
-                <span id="cart-badge" class="cart-badge" style="display: none;">0</span>
+                Корзина
+                <span id="cart-badge" class="cart-count-badge" style="display: none;">0</span>
             </button>
-            
-            <a href="{{ url_for('contact') }}" class="btn-book">Забронировать</a>
         </div>
     </nav>
 
@@ -271,10 +300,10 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({
-            duration: 800,      // Длительность анимации в мс
-            once: true,          // Анимация срабатывает 1 раз при скролле
-            offset: 100,         // Отступ от края экрана
-            easing: 'ease-out'   // Плавное затухание
+            duration: 800,
+            once: true,
+            offset: 100,
+            easing: 'ease-out'
         });
     </script>
 </body>
