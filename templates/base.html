@@ -20,15 +20,15 @@
         .btn-cart-nav {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 20px;
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            gap: 10px;
+            padding: 8px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 30px;
             color: #fff;
             background: transparent;
             font-size: 13px;
             font-weight: 600;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -40,13 +40,18 @@
             background: rgba(250, 204, 21, 0.05);
         }
 
+        /* Жёлтый кружок с количеством */
         .cart-count-badge {
             background: #facc15;
             color: #000;
             font-size: 11px;
             font-weight: 800;
             border-radius: 50%;
-            padding: 2px 6px;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             line-height: 1;
         }
 
@@ -254,7 +259,7 @@
     <div id="cart-modal" class="modal-overlay" onclick="if(event.target === this) toggleCartModal()">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Ваш предзаказ (Take Away)</h2>
+                <h2>Ваш заказ</h2>
                 <button type="button" class="modal-close" onclick="toggleCartModal()">&times;</button>
             </div>
 
@@ -292,7 +297,7 @@
                 </div>
 
                 <button type="submit" class="btn-submit" onclick="localStorage.removeItem('sidorov_cart')">
-                    Оформить предзаказ
+                    Оформить заказ
                 </button>
             </form>
         </div>
