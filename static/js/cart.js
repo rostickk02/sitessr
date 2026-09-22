@@ -70,12 +70,12 @@ function renderCartModal() {
                     <strong>${item.name}</strong>
                     <span>${item.price} ₽</span>
                 </div>
-                <div class="cart-item-controls">
+                <div class="cart-item-qty">
                     <button type="button" onclick="changeQuantity(${item.id}, -1)">-</button>
                     <span>${item.quantity}</span>
                     <button type="button" onclick="changeQuantity(${item.id}, 1)">+</button>
                 </div>
-            </div>
+             </div>
         `;
     }).join('');
 
