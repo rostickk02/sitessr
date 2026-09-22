@@ -37,15 +37,15 @@ a {
     justify-content: space-between;
     align-items: center;
     padding: 18px 6%;
-    background: rgba(10, 11, 13, 0.75);
-    backdrop-filter: blur(12px);
+    background: rgba(10, 11, 13, 0.25);
+    backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(12px);
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 1000;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
 }
 
 .logo-container {
