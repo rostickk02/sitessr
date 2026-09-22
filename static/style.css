@@ -31,19 +31,21 @@ a {
     transition: all 0.3s ease;
 }
 
-/* /* --- ПРОЗРАЧНАЯ НАВИГАЦИЯ --- */
+/* --- НАВИГАЦИЯ (ШАПКА) --- */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 22px 6%;
-    background: transparent; /* Делаем фон полностью прозрачным */
-    position: absolute; /* Накладываем шапку поверх фона */
+    padding: 18px 6%;
+    background: rgba(10, 11, 13, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 1000;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* Легкая едва заметная линия */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .logo-container {
@@ -103,12 +105,12 @@ a {
     color: #000000;
 }
 
-/* --- HERO BANNER --- */
+/* --- HERO BANNER (ГЛАВНАЯ СТРАНИЦА) --- */
 .hero-banner {
-    min-height: 85vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
-    padding: 0 8%;
+    padding: 100px 8% 40px;
     background: linear-gradient(90deg, rgba(10,11,13,0.92) 0%, rgba(10,11,13,0.6) 45%, rgba(10,11,13,0.1) 100%), 
                 url('hero-bg.jpg') center/cover no-repeat;
 }
@@ -193,43 +195,12 @@ footer {
     height: 40px;
 }
 
-/* Адаптивность для мобильных */
-@media (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-        gap: 15px;
-        padding: 15px 20px;
-    }
-
-    .nav-links {
-        gap: 15px;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .hero-title {
-        font-size: 38px;
-    }
-
-    .bottom-bar {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-    }
-
-    footer {
-        flex-direction: column;
-        gap: 20px;
-        text-align: center;
-    }
-}
-
-/* --- СТИЛИ ДЛЯ ВНУТРЕННИХ СТРАНИЦ --- */
+/* --- ВНУТРЕННИЕ СТРАНИЦЫ (Меню, О нас, Контакты) --- */
 .page-container {
-    padding: 50px 8% 80px;
+    padding: 130px 8% 80px; /* Безопасный отступ сверху, чтобы контент не заходил под фиксированную шапку */
     max-width: 1400px;
     margin: 0 auto;
-    min-height: calc(100vh - 160px);
+    min-height: calc(100vh - 120px);
 }
 
 .subtitle {
@@ -439,11 +410,58 @@ footer {
     border: 1px solid var(--border-color);
 }
 
-/* АДАПТИВНОСТЬ */
+/* --- АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ --- */
 @media (max-width: 900px) {
     .about-hero,
     .contact-grid,
     .features-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        position: relative; /* На телефонах отменяем абсолютное наложение, чтобы элементы не перекрывали текст */
+        flex-direction: column;
+        gap: 12px;
+        padding: 14px 20px;
+        background: rgba(10, 11, 13, 0.95);
+    }
+
+    .nav-links {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .nav-actions {
+        width: 100%;
+        justify-content: center;
+        margin-top: 5px;
+    }
+
+    .hero-banner {
+        min-height: auto;
+        padding: 60px 6% 40px;
+    }
+
+    .hero-title {
+        font-size: 34px;
+    }
+
+    .page-container {
+        padding: 30px 5% 50px;
+    }
+
+    .bottom-bar {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    footer {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
     }
 }
