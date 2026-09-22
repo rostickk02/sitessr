@@ -762,3 +762,75 @@ input::placeholder {
     color: #777 !important;
     opacity: 1;
 }
+
+/* --- АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ --- */
+@media (max-width: 900px) {
+    .about-hero,
+    .contact-grid,
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Убираем слишком широкие отступы по бокам для всей страницы */
+    .page-container {
+        padding: 90px 4% 40px !important; /* Уменьшили боковые отступы до 4% */
+        width: 100%;
+    }
+
+    .navbar {
+        position: fixed;
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px 16px;
+        background: rgba(10, 11, 13, 0.95);
+    }
+
+    .nav-links {
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .nav-actions {
+        width: 100%;
+        justify-content: center;
+        margin-top: 2px;
+    }
+
+    .hero-banner {
+        min-height: auto;
+        padding: 120px 5% 40px; /* Безопасный отступ сверху под шапку */
+    }
+
+    .hero-title {
+        font-size: 32px; /* Делаем заголовок аккуратнее для телефонов */
+        letter-spacing: 1px;
+    }
+
+    .hero-description {
+        font-size: 14px;
+    }
+
+    /* Карточки и блоки на всю ширину экрана с нормальными отступами */
+    .contact-card, 
+    .feature-card, 
+    .login-card {
+        padding: 20px 16px;
+    }
+
+    .bottom-bar {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+        padding: 20px 4%;
+    }
+
+    footer {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+        padding: 30px 4%;
+    }
+}
