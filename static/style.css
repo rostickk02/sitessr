@@ -627,3 +627,38 @@ button[type="submit"] {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(255, 255, 255, 0.15);
 }
+
+.menu-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 8px;
+}
+
+.menu-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-add-cart {
+    background: rgba(250, 204, 21, 0.15);
+    border: 1px solid rgba(250, 204, 21, 0.3);
+    color: #facc15;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+.btn-add-cart:hover {
+    background: #facc15;
+    color: #000;
+    transform: scale(1.1);
+}
