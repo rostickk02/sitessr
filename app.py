@@ -10,11 +10,8 @@ ADMIN_USERNAME = 'admin'
 ADMIN_PASSWORD = 'admin123'
 
 # --- ПОДКЛЮЧЕНИЕ К БАЗЕ ДАННЫХ ---
-# Если переменная DATABASE_URL есть (на Render), используем PostgreSQL.
-# Иначе подключаем локальную базу SQLite.
 db_url = os.environ.get('DATABASE_URL', 'sqlite:///site.db')
 
-# Исправление особенности строк подключения PostgreSQL на Render (postgres:// -> postgresql://)
 if db_url and db_url.startswith("postgres://"):
     db_url = db_url.replace("postgres://", "postgresql://", 1)
 
@@ -24,21 +21,24 @@ db = SQLAlchemy(app)
 
 # --- МОДЕЛИ БАЗЫ ДАННЫХ ---
 
-# 1. Таблица сообщений с поддержкой статуса прочтения (is_read)
+# 1. Сообщения и бронирования
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), nullable=False)
     user_message = db.Column(db.Text, nullable=False)
     date = db.Column(db.DateTime, default=datetime.utcnow)
     is_read = db.Column(db.Boolean, default=False)
+    status = db.Column(db.String(50), default='Новая') # Новая, Подтверждена, Отклонена
 
-# 2. Таблица проектов портфолио
-class Project(db.Model):
+# 2. Позиции меню кофейни
+class MenuItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(150), nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    tech = db.Column(db.String(200), nullable=False)  # Технологии через запятую
-    icon = db.Column(db.String(100), default='fa-solid fa-code')
+    category = db.Column(db.String(100), nullable=False, default='Кофе') # Кофе, Авторские, Чай, Выпечка
+    price = db.Column(db.String(50), nullable=False) # e.g. "180 ₽" или "180 / 220 ₽"
+    volume = db.Column(db.String(50), default='300 мл')
+    description = db.Column(db.Text, nullable=True)
+    is_available = db.Column(db.Boolean, default=True) # Стоп-лист
 
 with app.app_context():
     db.create_all()
@@ -55,20 +55,9 @@ def about():
 
 @app.route('/portfolio')
 def portfolio():
-    projects = Project.query.all()
-    
-    projects_data = []
-    for p in projects:
-        tech_list = [t.strip() for t in p.tech.split(',') if t.strip()]
-        projects_data.append({
-            'id': p.id,
-            'title': p.title,
-            'description': p.description,
-            'tech': tech_list,
-            'icon': p.icon
-        })
-        
-    return render_template('portfolio.html', projects=projects_data)
+    # Загружаем позиции меню из БД
+    menu_items = MenuItem.query.all()
+    return render_template('portfolio.html', menu_items=menu_items)
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
@@ -96,7 +85,7 @@ def login():
             session['logged_in'] = True
             return redirect(url_for('admin'))
         else:
-            flash('Неверный логин или пароль!')
+            flash('Неверный логин или пароль управляющего!')
 
     return render_template('login.html')
 
@@ -105,7 +94,7 @@ def logout():
     session.pop('logged_in', None)
     return redirect(url_for('login'))
 
-# --- ПАНЕЛЬ АДМИНИСТРАТОРА И УПРАВЛЕНИЕ ---
+# --- КАБИНЕТ АДМИНИСТРАТОРА ---
 
 @app.route('/admin')
 def admin():
@@ -113,34 +102,59 @@ def admin():
         return redirect(url_for('login'))
 
     messages = Message.query.order_by(Message.date.desc()).all()
-    projects = Project.query.all()
-
-    # Сбор статистики
-    total_messages = len(messages)
-    unread_messages = Message.query.filter_by(is_read=False).count()
-    total_projects = len(projects)
+    menu_items = MenuItem.query.all()
 
     stats = {
-        'total_messages': total_messages,
-        'unread_messages': unread_messages,
-        'total_projects': total_projects
+        'total_messages': len(messages),
+        'unread_messages': Message.query.filter_by(is_read=False).count(),
+        'total_menu_items': len(menu_items),
+        'stop_list_count': MenuItem.query.filter_by(is_available=False).count()
     }
 
-    return render_template('admin.html', messages=messages, projects=projects, stats=stats)
+    return render_template('admin.html', messages=messages, menu_items=menu_items, stats=stats)
 
-# Удаление сообщения
-@app.route('/admin/delete_message/<int:msg_id>', methods=['POST'])
-def delete_message(msg_id):
+# Добавление новой позиции в меню
+@app.route('/admin/add_menu_item', methods=['POST'])
+def add_menu_item():
     if not session.get('logged_in'):
         return redirect(url_for('login'))
 
-    msg = Message.query.get_or_404(msg_id)
-    db.session.delete(msg)
+    title = request.form.get('title')
+    category = request.form.get('category')
+    price = request.form.get('price')
+    volume = request.form.get('volume')
+    description = request.form.get('description')
+
+    new_item = MenuItem(title=title, category=category, price=price, volume=volume, description=description)
+    db.session.add(new_item)
     db.session.commit()
-    flash('Сообщение успешно удалено!')
+    flash('Позиция успешно добавлена в меню кофейни!')
     return redirect(url_for('admin'))
 
-# Переключение статуса прочтения
+# Переключение стоп-листа (В наличии / Нет в наличии)
+@app.route('/admin/toggle_availability/<int:item_id>', methods=['POST'])
+def toggle_availability(item_id):
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+
+    item = MenuItem.query.get_or_404(item_id)
+    item.is_available = not item.is_available
+    db.session.commit()
+    return redirect(url_for('admin'))
+
+# Удаление позиции из меню
+@app.route('/admin/delete_menu_item/<int:item_id>', methods=['POST'])
+def delete_menu_item(item_id):
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+
+    item = MenuItem.query.get_or_404(item_id)
+    db.session.delete(item)
+    db.session.commit()
+    flash('Позиция удалена из меню!')
+    return redirect(url_for('admin'))
+
+# Управление статусом заявки / сообщения
 @app.route('/admin/toggle_read/<int:msg_id>', methods=['POST'])
 def toggle_read(msg_id):
     if not session.get('logged_in'):
@@ -151,34 +165,16 @@ def toggle_read(msg_id):
     db.session.commit()
     return redirect(url_for('admin'))
 
-# Добавление нового проекта
-@app.route('/admin/add_project', methods=['POST'])
-def add_project():
+@app.route('/admin/delete_message/<int:msg_id>', methods=['POST'])
+def delete_message(msg_id):
     if not session.get('logged_in'):
         return redirect(url_for('login'))
 
-    title = request.form.get('title')
-    description = request.form.get('description')
-    tech = request.form.get('tech')
-    icon = request.form.get('icon') or 'fa-solid fa-code'
-
-    new_project = Project(title=title, description=description, tech=tech, icon=icon)
-    db.session.add(new_project)
+    msg = Message.query.get_or_404(msg_id)
+    db.session.delete(msg)
     db.session.commit()
-    flash('Новый проект успешно добавлен!')
-    return redirect(url_for('admin'))
-
-# Удаление проекта
-@app.route('/admin/delete_project/<int:proj_id>', methods=['POST'])
-def delete_project(proj_id):
-    if not session.get('logged_in'):
-        return redirect(url_for('login'))
-
-    project = Project.query.get_or_404(proj_id)
-    db.session.delete(project)
-    db.session.commit()
-    flash('Проект удален из портфолио!')
+    flash('Заявка удалена!')
     return redirect(url_for('admin'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+  app.run(debug=True)
