@@ -1,4 +1,5 @@
 import os
+import json
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -40,8 +41,20 @@ class MenuItem(db.Model):
     description = db.Column(db.Text, nullable=True)
     is_available = db.Column(db.Boolean, default=True) # Стоп-лист
 
+# 3. Предзаказы (Take Away)
+class TakeawayOrder(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    customer_name = db.Column(db.String(100), nullable=False)
+    customer_phone = db.Column(db.String(50), nullable=False)
+    pickup_time = db.Column(db.String(20), nullable=False)
+    items_summary = db.Column(db.Text, nullable=False) # Итоговый список позиций
+    total_price = db.Column(db.Integer, nullable=False) # Общая сумма
+    comment = db.Column(db.Text, nullable=True)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+    is_completed = db.Column(db.Boolean, default=False)
+
 with app.app_context():
-    # db.drop_all()  # Пересоздаст таблицы под новую модель MenuItem
+    # db.drop_all()  # Раскомментируйте, если требуется пересоздать таблицы с нуля
     db.create_all()
 
 # --- ОСНОВНЫЕ МАРШРУТЫ ---
@@ -56,7 +69,6 @@ def about():
 
 @app.route('/portfolio')
 def portfolio():
-    # Загружаем позиции меню из БД
     menu_items = MenuItem.query.all()
     return render_template('portfolio.html', menu_items=menu_items)
 
@@ -73,6 +85,45 @@ def contact():
         return render_template('contact.html', name=name, message=msg)
 
     return render_template('contact.html')
+
+# --- ОБРАБОТКА ПРЕДЗАКАЗА (TAKE AWAY) ---
+
+@app.route('/takeaway', methods=['POST'])
+def create_takeaway_order():
+    raw_cart = request.form.get('cart_data')
+    name = request.form.get('customer_name')
+    phone = request.form.get('customer_phone')
+    pickup_time = request.form.get('pickup_time')
+    comment = request.form.get('comment')
+
+    if not raw_cart or raw_cart == '[]':
+        flash('Ваша корзина пуста!')
+        return redirect(url_for('portfolio'))
+
+    try:
+        cart_items = json.loads(raw_cart)
+    except json.JSONDecodeError:
+        flash('Ошибка обработки корзины!')
+        return redirect(url_for('portfolio'))
+
+    # Формируем читаемую строку со списком заказанных позиций
+    items_summary = ", ".join([f"{item['name']} x{item['quantity']}" for item in cart_items])
+    total_price = sum(item['price'] * item['quantity'] for item in cart_items)
+
+    new_order = TakeawayOrder(
+        customer_name=name,
+        customer_phone=phone,
+        pickup_time=pickup_time,
+        items_summary=items_summary,
+        total_price=total_price,
+        comment=comment
+    )
+    
+    db.session.add(new_order)
+    db.session.commit()
+
+    flash('Ваш предзаказ успешно оформлен! Ждём вас в назначеское время.')
+    return redirect(url_for('portfolio'))
 
 # --- АВТОРИЗАЦИЯ ---
 
@@ -104,15 +155,17 @@ def admin():
 
     messages = Message.query.order_by(Message.date.desc()).all()
     menu_items = MenuItem.query.all()
+    takeaway_orders = TakeawayOrder.query.order_by(TakeawayOrder.date.desc()).all()
 
     stats = {
         'total_messages': len(messages),
         'unread_messages': Message.query.filter_by(is_read=False).count(),
         'total_menu_items': len(menu_items),
-        'stop_list_count': MenuItem.query.filter_by(is_available=False).count()
+        'stop_list_count': MenuItem.query.filter_by(is_available=False).count(),
+        'total_takeaway': len(takeaway_orders)
     }
 
-    return render_template('admin.html', messages=messages, menu_items=menu_items, stats=stats)
+    return render_template('admin.html', messages=messages, menu_items=menu_items, takeaway_orders=takeaway_orders, stats=stats)
 
 # Добавление новой позиции в меню
 @app.route('/admin/add_menu_item', methods=['POST'])
@@ -177,5 +230,17 @@ def delete_message(msg_id):
     flash('Заявка удалена!')
     return redirect(url_for('admin'))
 
+# Отметка или удаление предзаказов из админки
+@app.route('/admin/delete_takeaway/<int:order_id>', methods=['POST'])
+def delete_takeaway(order_id):
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+
+    order = TakeawayOrder.query.get_or_404(order_id)
+    db.session.delete(order)
+    db.session.commit()
+    flash('Предзаказ удален!')
+    return redirect(url_for('admin'))
+
 if __name__ == '__main__':
-  app.run(debug=True)
+    app.run(debug=True)
